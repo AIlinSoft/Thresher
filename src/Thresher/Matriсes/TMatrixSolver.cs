@@ -155,7 +155,7 @@ namespace AIlins.Thresher
         /// <param name="value2Index">A 32-bit integer that represents the index in the <paramref name="value2"/> vector at which addition begins</param>
         /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> vector at which copying result begins</param>
         /// <remarks>If the <paramref name="result"/> value is null, automatically creates a new instance of the <typeparamref name="FullVector<T>"/></remarks>
-        public virtual void Addition(VectorT<T> value1, VectorT<T> value2, ref FullVector<T> result, int length = int.MaxValue, int value1Index = 0, int value2Index = 0, int resultIndex = 0)
+        public virtual void Addition(Vector<T> value1, Vector<T> value2, ref FullVector<T> result, int length = int.MaxValue, int value1Index = 0, int value2Index = 0, int resultIndex = 0)
         {
             ThrowHelper<T>.ThrowIfNull(value1, "value1");
             ThrowHelper<T>.ThrowIfNull(value2, "value2");
@@ -182,7 +182,7 @@ namespace AIlins.Thresher
         /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value1"/> array at which addition begins</param>
         /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which copying result begins</param>
         /// <remarks>If the <paramref name="result"/> value is null, automatically creates a new instance of the <typeparamref name="FullVector<T>"/></remarks>
-        public virtual void Addition(VectorT<T> value1, T value2, ref FullVector<T> result, int length = int.MaxValue, int value1Index = 0, int resultIndex = 0)
+        public virtual void Addition(Vector<T> value1, T value2, ref FullVector<T> result, int length = int.MaxValue, int value1Index = 0, int resultIndex = 0)
         {
             ThrowHelper<T>.ThrowIfNull(value1, "value1");
             if (length == int.MaxValue)
@@ -221,20 +221,20 @@ namespace AIlins.Thresher
             }
             else
             {
-                var csrMatrix1 = value1 as CSRMatrix<T>;
+                var csrMatrix1 = value1 as CsrMatrix<T>;
                 if (csrMatrix1 != null)
                 {
-                    var csrMatrix2 = value2 as CSRMatrix<T>;
+                    var csrMatrix2 = value2 as CsrMatrix<T>;
                     if (csrMatrix2 == null)
                         throw new NotImplementedException("The type of value1 is different than value2 type!");
                     int minimumCapacity = csrMatrix1.Filling > csrMatrix2.Filling ? csrMatrix1.Filling : csrMatrix2.Filling;
-                    var csrResult = result as CSRMatrix<T>;
+                    var csrResult = result as CsrMatrix<T>;
 
                     if (csrResult == null)
                     {
                         if (result != null)
                             throw new NotImplementedException("Result type is different than value type");
-                        csrResult = new CSRMatrix<T>(csrMatrix1.RowsCount, csrMatrix1.ColumnsCount, minimumCapacity);
+                        csrResult = new CsrMatrix<T>(csrMatrix1.RowsCount, csrMatrix1.ColumnsCount, minimumCapacity);
                     }
                     else
                     {
@@ -260,7 +260,7 @@ namespace AIlins.Thresher
         /// <param name="length">A 32-bit integer that represents the number of elements to summariez</param>
         /// <param name="valueIndex">A 32-bit integer that represents the index in the <paramref name="value"/> vector at which summariez begins</param>
         /// <returns>Result of the elements summariez</returns>
-        public virtual T Summary(VectorT<T> value, int length = int.MaxValue, int valueIndex = 0)
+        public virtual T Summary(Vector<T> value, int length = int.MaxValue, int valueIndex = 0)
         {
             ThrowHelper<T>.ThrowIfNull(value, "value");
             if (length == int.MaxValue)
@@ -292,7 +292,7 @@ namespace AIlins.Thresher
         /// <param name="value2Index">A 32-bit integer that represents the index in the <paramref name="value2"/> vector at which substraction begins</param>
         /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> vector at which copying result begins</param>
         /// <remarks>If the <paramref name="result"/> value is null, automatically creates a new instance of the <typeparamref name="FullVector<T>"/></remarks>
-        public virtual void Substraction(VectorT<T> value1, VectorT<T> value2, ref FullVector<T> result, int length = int.MaxValue, int value1Index = 0, int value2Index = 0, int resultIndex = 0)
+        public virtual void Substraction(Vector<T> value1, Vector<T> value2, ref FullVector<T> result, int length = int.MaxValue, int value1Index = 0, int value2Index = 0, int resultIndex = 0)
         {
             ThrowHelper<T>.ThrowIfNull(value1, "value1");
             ThrowHelper<T>.ThrowIfNull(value2, "value2");
@@ -398,19 +398,19 @@ namespace AIlins.Thresher
             }
             else
             {
-                var csrMatrix1 = value1 as CSRMatrix<T>;
+                var csrMatrix1 = value1 as CsrMatrix<T>;
                 if (csrMatrix1 != null)
                 {
-                    var csrMatrix2 = value2 as CSRMatrix<T>;
+                    var csrMatrix2 = value2 as CsrMatrix<T>;
                     if (csrMatrix2 == null)
                         throw new NotImplementedException("The type of value1 is different than value2 type!");
                     int minimumCapacity = csrMatrix1.Filling > csrMatrix2.Filling ? csrMatrix1.Filling : csrMatrix2.Filling;
-                    var csrResult = result as CSRMatrix<T>;
+                    var csrResult = result as CsrMatrix<T>;
                     if (csrResult == null)
                     {
                         if (result != null)
                             throw new NotImplementedException("Result type is different than value type");
-                        csrResult = new CSRMatrix<T>(csrMatrix1.RowsCount, csrMatrix1.ColumnsCount, minimumCapacity);
+                        csrResult = new CsrMatrix<T>(csrMatrix1.RowsCount, csrMatrix1.ColumnsCount, minimumCapacity);
                     }
                     else
                     {
@@ -438,7 +438,7 @@ namespace AIlins.Thresher
         /// <param name="valueIndex">A 32-bit integer that represents the index in the <paramref name="value"/> vector at which negates begins</param>
         /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> vactor at which copying result begins</param>
         /// <remarks>If the <paramref name="result"/> value is null, automatically creates a new instance of the <typeparamref name="FullVector<T>"/></remarks>
-        public virtual void Negation(VectorT<T> value, ref FullVector<T> result, int length = int.MaxValue, int valueIndex = 0, int resultIndex = 0)
+        public virtual void Negation(Vector<T> value, ref FullVector<T> result, int length = int.MaxValue, int valueIndex = 0, int resultIndex = 0)
         {
             ThrowHelper<T>.ThrowIfNull(value, "value");
             if (length == int.MaxValue)
@@ -468,10 +468,10 @@ namespace AIlins.Thresher
             }
             else
             {
-                var csrMatrix = value as CSRMatrix<T>;
+                var csrMatrix = value as CsrMatrix<T>;
                 if (csrMatrix != null)
                 {
-                    CSRMatrix<T> csrResult = CheckCSRResultMatrix(csrMatrix, ref result);
+                    CsrMatrix<T> csrResult = CheckCSRResultMatrix(csrMatrix, ref result);
                     m_ArraySolver.Negation(csrMatrix.m_Values, csrResult.m_Values, csrMatrix.Filling);
                 }
                 else
@@ -650,19 +650,19 @@ namespace AIlins.Thresher
             }
             else
             {
-                var csrMatrix1 = value1 as CSRMatrix<T>;
+                var csrMatrix1 = value1 as CsrMatrix<T>;
                 if (csrMatrix1 != null)
                 {
-                    var csrMatrix2 = value2 as CSRMatrix<T>;
+                    var csrMatrix2 = value2 as CsrMatrix<T>;
                     if (csrMatrix2 == null)
                         throw new NotImplementedException("The type of value1 is different than value2 type!");
                     int minimumCapacity = csrMatrix1.Filling > csrMatrix2.Filling ? csrMatrix1.Filling : csrMatrix2.Filling;
-                    var csrResult = result as CSRMatrix<T>;
+                    var csrResult = result as CsrMatrix<T>;
                     if (csrResult == null)
                     {
                         if (result != null)
                             throw new NotImplementedException("Result type is different than value type!");
-                        csrResult = new CSRMatrix<T>(csrMatrix1.RowsCount, csrMatrix1.ColumnsCount, minimumCapacity);
+                        csrResult = new CsrMatrix<T>(csrMatrix1.RowsCount, csrMatrix1.ColumnsCount, minimumCapacity);
                     }
                     else
                     {
@@ -765,7 +765,7 @@ namespace AIlins.Thresher
         /// <param name="value1"></param>
         /// <param name="value2"></param>
         /// <param name="result"></param>
-        public virtual void Multiply(Matrix<T> value1, VectorT<T> value2, ref FullVector<T> result)
+        public virtual void Multiply(Matrix<T> value1, Vector<T> value2, ref FullVector<T> result)
         {
             ThrowHelper<T>.ThrowIfNull(value1, "value1");
             ThrowHelper<T>.ThrowIfNull(value2, "value2");
@@ -783,7 +783,7 @@ namespace AIlins.Thresher
                 FullMatrixVectorMultiply(value1.RowsCount, value1.ColumnsCount, fullMatrix.m_Values, value2Values, result.m_Values);
             else
             {
-                var csrMatrix = value1 as CSRMatrix<T>;
+                var csrMatrix = value1 as CsrMatrix<T>;
                 if (csrMatrix != null)
                     CSRMatrixVectorMultiply(value1.RowsCount, value1.ColumnsCount, csrMatrix.m_Values, csrMatrix.m_Columns, csrMatrix.m_RowsMapping, value2Values, result.m_Values);
                 else
@@ -807,10 +807,10 @@ namespace AIlins.Thresher
             }
             else
             {
-                var csrMatrix = value1 as CSRMatrix<T>;
+                var csrMatrix = value1 as CsrMatrix<T>;
                 if (csrMatrix != null)
                 {
-                    CSRMatrix<T> csrResult = CheckCSRResultMatrix(csrMatrix, ref result);
+                    CsrMatrix<T> csrResult = CheckCSRResultMatrix(csrMatrix, ref result);
                     m_ArraySolver.Multiply(csrMatrix.m_Values, value2, csrResult.m_Values, csrMatrix.Filling);
                 }
                 else
@@ -826,7 +826,7 @@ namespace AIlins.Thresher
         /// <param name="length"></param>
         /// <param name="value1Index"></param>
         /// <param name="resultIndex"></param>
-        public virtual void Multiply(VectorT<T> value1, T value2, ref FullVector<T> result, int length = int.MaxValue, int value1Index = 0, int resultIndex = 0)
+        public virtual void Multiply(Vector<T> value1, T value2, ref FullVector<T> result, int length = int.MaxValue, int value1Index = 0, int resultIndex = 0)
         {
             ThrowHelper<T>.ThrowIfNull(value1, "value1");
             if (length == int.MaxValue)
@@ -955,7 +955,7 @@ namespace AIlins.Thresher
         /// <param name="value2"></param>
         /// <param name="result"></param>
         /// <param name="isVertical"></param>
-        public virtual void ElementsMultiply(Matrix<T> value1, VectorT<T> value2, ref Matrix<T> result, bool isVertical = false)
+        public virtual void ElementsMultiply(Matrix<T> value1, Vector<T> value2, ref Matrix<T> result, bool isVertical = false)
         {
             ThrowHelper<T>.ThrowIfNull(value1, "value1");
             ThrowHelper<T>.ThrowIfNull(value2, "value2");
@@ -968,10 +968,10 @@ namespace AIlins.Thresher
             }
             else
             {
-                var csrMatrix = value1 as CSRMatrix<T>;
+                var csrMatrix = value1 as CsrMatrix<T>;
                 if (csrMatrix != null)
                 {
-                    CSRMatrix<T> csrResult = CheckCSRResultMatrix(csrMatrix, ref result);
+                    CsrMatrix<T> csrResult = CheckCSRResultMatrix(csrMatrix, ref result);
                     CSRMatrixVectorElementsMultiply(value1.RowsCount, value1.ColumnsCount, csrMatrix.m_Values, csrMatrix.m_Columns, csrMatrix.m_RowsMapping, value2Values, csrResult.m_Values, isVertical);
                 }
                 else
@@ -988,7 +988,7 @@ namespace AIlins.Thresher
         /// <param name="value1Index"></param>
         /// <param name="value2Index"></param>
         /// <param name="resultIndex"></param>
-        public virtual void Multiply(VectorT<T> value1, VectorT<T> value2, ref FullVector<T> result, int length = int.MaxValue, int value1Index = 0, int value2Index = 0, int resultIndex = 0)
+        public virtual void Multiply(Vector<T> value1, Vector<T> value2, ref FullVector<T> result, int length = int.MaxValue, int value1Index = 0, int value2Index = 0, int resultIndex = 0)
         {
             ThrowHelper<T>.ThrowIfNull(value1, "value1");
             ThrowHelper<T>.ThrowIfNull(value2, "value2");
@@ -1014,7 +1014,7 @@ namespace AIlins.Thresher
         /// <param name="value1Index"></param>
         /// <param name="value2Index"></param>
         /// <returns></returns>
-        public virtual T DotMultiply(VectorT<T> value1, VectorT<T> value2, int length = int.MaxValue, int value1Index = 0, int value2Index = 0)
+        public virtual T DotMultiply(Vector<T> value1, Vector<T> value2, int length = int.MaxValue, int value1Index = 0, int value2Index = 0)
         {
             FullVector<T> temp = null;
             Multiply(value1, value2, ref temp, length, value1Index, value2Index);
@@ -1022,13 +1022,13 @@ namespace AIlins.Thresher
         }
         #endregion Multiply
         #region Division
-        public virtual void Division(VectorT<T> b, Matrix<T> a, ref FullVector<T> result)
+        public virtual void Division(Vector<T> b, Matrix<T> a, ref FullVector<T> result)
         {
             Matrix<T> temp = null;
             Decomposition(a, ref temp);
             Solve(temp, b, ref result);
         }
-        public virtual void ElementsDivision(Matrix<T> value1, VectorT<T> value2, ref Matrix<T> result, bool isVertical = false)
+        public virtual void ElementsDivision(Matrix<T> value1, Vector<T> value2, ref Matrix<T> result, bool isVertical = false)
         {
             FullVector<T> temp = null;
             Negation(value2, ref temp);
@@ -1045,7 +1045,7 @@ namespace AIlins.Thresher
         /// <param name="value2Index">A 32-bit integer that represents the index in the <paramref name="value2"/> vector at which division begins</param>
         /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> vector at which copying result begins</param>
         /// <remarks>If the <paramref name="result"/> value is null, automatically creates a new instance of the <typeparamref name="FullVector<T>"/></remarks>
-        public virtual void Division(VectorT<T> value1, VectorT<T> value2, ref FullVector<T> result, int length = int.MaxValue, int value1Index = 0, int value2Index = 0, int resultIndex = 0)
+        public virtual void Division(Vector<T> value1, Vector<T> value2, ref FullVector<T> result, int length = int.MaxValue, int value1Index = 0, int value2Index = 0, int resultIndex = 0)
         {
             ThrowHelper<T>.ThrowIfNull(value1, "value1");
             ThrowHelper<T>.ThrowIfNull(value2, "value2");
@@ -1074,10 +1074,10 @@ namespace AIlins.Thresher
             }
             else
             {
-                var csrMatrix = value as CSRMatrix<T>;
+                var csrMatrix = value as CsrMatrix<T>;
                 if (csrMatrix != null)
                 {
-                    CSRMatrix<T> csrResult = CheckCSRResultMatrix(csrMatrix, ref result);                  
+                    CsrMatrix<T> csrResult = CheckCSRResultMatrix(csrMatrix, ref result);                  
                     m_ArraySolver.Inversion(csrMatrix.m_Values, csrResult.m_Values, csrMatrix.Filling);
                 }
                 else
@@ -1093,7 +1093,7 @@ namespace AIlins.Thresher
         /// <param name="valueIndex">A 32-bit integer that represents the index in the <paramref name="value"/> vector at which inverting begins</param>
         /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> vector at which copying result begins</param>
         /// <remarks>If the <paramref name="result"/> value is null, automatically creates a new instance of the <typeparamref name="FullVector<T>"/></remarks>
-        public virtual void ElementsInversion(VectorT<T> value, ref FullVector<T> result, int length = int.MaxValue, int valueIndex = 0, int resultIndex = 0)
+        public virtual void ElementsInversion(Vector<T> value, ref FullVector<T> result, int length = int.MaxValue, int valueIndex = 0, int resultIndex = 0)
         {
             ThrowHelper<T>.ThrowIfNull(value, "value");
             if (length == int.MaxValue)
@@ -1196,10 +1196,10 @@ namespace AIlins.Thresher
             }
             else
             {
-                var csrMatrix = value as CSRMatrix<T>;
+                var csrMatrix = value as CsrMatrix<T>;
                 if (csrMatrix != null)
                 {
-                    CSRMatrix<T> csrResult = CheckCSRResultMatrix(csrMatrix, ref result);
+                    CsrMatrix<T> csrResult = CheckCSRResultMatrix(csrMatrix, ref result);
                     CSRMatrixTranspose(value.RowsCount, value.ColumnsCount, csrMatrix.m_Values, csrMatrix.m_Columns, csrMatrix.m_RowsMapping, csrResult.m_Values, csrResult.m_Columns, csrResult.m_RowsMapping);
                 }
                 else
@@ -1368,21 +1368,21 @@ namespace AIlins.Thresher
             }
             else
             {
-                var csrMatrix = value as CSRMatrix<T>;
+                var csrMatrix = value as CsrMatrix<T>;
                 if (csrMatrix != null)
                 {
-                    var csrResult = result as CSRMatrix<T>;
+                    var csrResult = result as CsrMatrix<T>;
                     if (csrResult == null)
                     {
                         if (result != null)
                             throw new NotImplementedException("Result type is different value type");
                         if (context == null)
                             context = GetSortingContext(csrMatrix);
-                        csrResult = new CSRMatrix<T>(value.RowsCount, value.ColumnsCount, context.Count);
+                        csrResult = new CsrMatrix<T>(value.RowsCount, value.ColumnsCount, context.Count);
                     }
                     else
                         if (context != null && context.Count > csrResult.Capacity)
-                            csrResult = new CSRMatrix<T>(value.RowsCount, value.ColumnsCount, context.Count);
+                            csrResult = new CsrMatrix<T>(value.RowsCount, value.ColumnsCount, context.Count);
                     result = csrResult;
                     CSRMatrixDecomposition(value.RowsCount, value.ColumnsCount, csrMatrix.m_Values, csrMatrix.m_Columns, csrMatrix.m_RowsMapping, ref csrResult.m_Values, ref csrResult.m_Columns, csrResult.m_RowsMapping);
                 }
@@ -1571,14 +1571,14 @@ namespace AIlins.Thresher
                 FullMatrixSolve(factor.RowsCount, factor.ColumnsCount, fullMatrix.m_Values, b.m_Values, b.ColumnsCount, result.m_Values);
             else
             {
-                var csrMatrix = factor as CSRMatrix<T>;
+                var csrMatrix = factor as CsrMatrix<T>;
                 if (csrMatrix != null)
                     CSRMatrixSolve(factor.RowsCount, factor.ColumnsCount, csrMatrix.m_Values, csrMatrix.m_Columns, csrMatrix.m_RowsMapping, b.m_Values, b.ColumnsCount, result.m_Values);
                 else
                     ThrowHelper<T>.ThrowNotImplementedMatrixType("factor");
             }
         }
-        public virtual void Solve(Matrix<T> factor, VectorT<T> b, ref FullVector<T> result)
+        public virtual void Solve(Matrix<T> factor, Vector<T> b, ref FullVector<T> result)
         {
             ThrowHelper<T>.ThrowIfNull(factor, "factor");
             ThrowHelper<T>.ThrowIfNull(b, "b");
@@ -1590,7 +1590,7 @@ namespace AIlins.Thresher
                 FullMatrixSolve(factor.RowsCount, factor.ColumnsCount, fullMatrix.m_Values, bValues, 1, result.m_Values);
             else
             {
-                var csrMatrix = factor as CSRMatrix<T>;
+                var csrMatrix = factor as CsrMatrix<T>;
                 if (csrMatrix != null)
                     CSRMatrixSolve(factor.RowsCount, factor.ColumnsCount, csrMatrix.m_Values, csrMatrix.m_Columns, csrMatrix.m_RowsMapping, bValues, 1, result.m_Values);
                 else
@@ -1672,7 +1672,7 @@ namespace AIlins.Thresher
             sortedIds.Reverse();
             return sortedIds.ToArray();
         }
-        unsafe public virtual SolvingContext GetSortingContext(CSRMatrix<T> a)
+        unsafe public virtual SolvingContext GetSortingContext(CsrMatrix<T> a)
         {
             int totalCount = 0;
             int m = a.m_RowsCount;
@@ -1828,10 +1828,10 @@ namespace AIlins.Thresher
             }
             else
             {
-                var csrMatrix1 = value1 as CSRMatrix<T>;
+                var csrMatrix1 = value1 as CsrMatrix<T>;
                 if (csrMatrix1 != null)
                 {
-                    var csrMatrix2 = value2 as CSRMatrix<T>;
+                    var csrMatrix2 = value2 as CsrMatrix<T>;
                     if (csrMatrix2 == null)
                         throw new NotImplementedException("The type of value1 is different than value2 type!");
                     return CSRMatrixEquality(csrMatrix1.RowsCount, csrMatrix1.ColumnsCount,
@@ -1844,7 +1844,7 @@ namespace AIlins.Thresher
         }
         #endregion Equals
         #region IO
-        public virtual void CreateCSRMatrix(int m, int n, SortedList<int, T>[] values, ref CSRMatrix<T> result)
+        public virtual void CreateCSRMatrix(int m, int n, SortedList<int, T>[] values, ref CsrMatrix<T> result)
         {
             if (m < 0 || n < 0)
                 throw new ArgumentOutOfRangeException("m or n");
@@ -1852,7 +1852,7 @@ namespace AIlins.Thresher
             if(m != values.Length)
                 throw new ArgumentOutOfRangeException("values");
             if (((object)result) == null)
-                result = new CSRMatrix<T>(m, n, m * 5);
+                result = new CsrMatrix<T>(m, n, m * 5);
             else
             {
                 result.m_Version++;
@@ -1862,7 +1862,7 @@ namespace AIlins.Thresher
             for (int i = 0; i < m; ++i)
                 result.AddRow(values[i]);
         }
-        public virtual void ReadCSRMatrix(Stream stream, int m, int n, int count, ref CSRMatrix<T> result, StreamType type = StreamType.ElementByRowText)
+        public virtual void ReadCSRMatrix(Stream stream, int m, int n, int count, ref CsrMatrix<T> result, StreamType type = StreamType.ElementByRowText)
         {
             if (m < 0 || n < 0)
                 throw new ArgumentOutOfRangeException("m or n");
@@ -1936,7 +1936,7 @@ namespace AIlins.Thresher
                     throw new NotImplementedException();
             }
             if (result == null)
-                result = new CSRMatrix<T>(m, n, count);
+                result = new CsrMatrix<T>(m, n, count);
             else
             {
                 if (result.RowsCount != m || result.ColumnsCount != n)
@@ -2042,15 +2042,15 @@ namespace AIlins.Thresher
             }
             else
             {
-                var csrMatrix = value as CSRMatrix<K>;
+                var csrMatrix = value as CsrMatrix<K>;
                 if (csrMatrix != null)
                 {
-                    var csrResult = result as CSRMatrix<T>;
+                    var csrResult = result as CsrMatrix<T>;
                     if (csrResult == null)
                     {
                         if (result != null)
                             throw new NotImplementedException("Result type is different value type");
-                        csrResult = new CSRMatrix<T>(value.RowsCount, value.ColumnsCount, csrMatrix.Filling);
+                        csrResult = new CsrMatrix<T>(value.RowsCount, value.ColumnsCount, csrMatrix.Filling);
                     }
                     else
                     {
@@ -2079,7 +2079,7 @@ namespace AIlins.Thresher
         /// <param name="length">A 32-bit integer that represents the number of elements to conversion</param>
         /// <param name="valueIndex">A 32-bit integer that represents the index in the <paramref name="value"/> vector at which conversion begins</param>
         /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> vector at which conversion begins</param>
-        public virtual void From<K>(VectorT<K> value, ref FullVector<T> result, int length = int.MaxValue, int valueIndex = 0, int resultIndex = 0)
+        public virtual void From<K>(Vector<K> value, ref FullVector<T> result, int length = int.MaxValue, int valueIndex = 0, int resultIndex = 0)
         {
             ThrowHelper<T>.ThrowIfNull(value, "value");
             if (length == int.MaxValue)
@@ -2148,14 +2148,14 @@ namespace AIlins.Thresher
             result = fullResult;
             return fullResult;
         }
-        protected internal static CSRMatrix<T> CheckCSRResultMatrix(CSRMatrix<T> csrMatrix, ref Matrix<T> result)
+        protected internal static CsrMatrix<T> CheckCSRResultMatrix(CsrMatrix<T> csrMatrix, ref Matrix<T> result)
         {
-            var csrResult = result as CSRMatrix<T>;
+            var csrResult = result as CsrMatrix<T>;
             if (csrResult == null)
             {
                 if (result != null)
                     throw new NotImplementedException("Result type is different value type");
-                csrResult = new CSRMatrix<T>(csrMatrix.RowsCount, csrMatrix.ColumnsCount, csrMatrix.Filling);
+                csrResult = new CsrMatrix<T>(csrMatrix.RowsCount, csrMatrix.ColumnsCount, csrMatrix.Filling);
             }
             else
             {
@@ -2173,7 +2173,7 @@ namespace AIlins.Thresher
             return csrResult;
         }
         
-        protected static T[] CheckIsFull(VectorT<T> value2)
+        protected static T[] CheckIsFull(Vector<T> value2)
         {
             T[] value2Values;
             var temp = value2 as FullVector<T>;

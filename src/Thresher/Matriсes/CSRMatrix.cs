@@ -30,19 +30,19 @@ namespace AIlins.Thresher
     /// <summary>
     /// Very sparsity matrices database, only for assembly math
     /// </summary>
-    public class CSRMatrix<T> : Matrix<T>
+    public class CsrMatrix<T> : Matrix<T>
     {
         #region Classes, structures, enums
-        public struct CSREnumerator : IEnumerator<VectorT<T>>, IEnumerator
+        internal struct CsrEnumerator : IEnumerator<Vector<T>>, IEnumerator
         {
-            private CSRMatrix<T> m_Matrix;
+            private CsrMatrix<T> m_Matrix;
             private int m_Index;
             private int m_Version;
-            private VectorT<T> m_Current;
+            private Vector<T> m_Current;
             private bool m_IsColumn;
             /// <summary>Gets the element at the current position of the enumerator.</summary>
             /// <returns>The element in the <see cref="T:System.Collections.Generic.List`1" /> at the current position of the enumerator.</returns>
-            public VectorT<T> Current
+            public Vector<T> Current
             {
                 get
                 {
@@ -63,7 +63,7 @@ namespace AIlins.Thresher
                     return Current;
                 }
             }
-            internal CSREnumerator(CSRMatrix<T> list, bool isColumn = false)
+            internal CsrEnumerator(CsrMatrix<T> list, bool isColumn = false)
             {
                 m_Matrix = list;
                 m_Index = -1;
@@ -76,7 +76,7 @@ namespace AIlins.Thresher
             /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
             public bool MoveNext()
             {
-                CSRMatrix<T> matrix = m_Matrix;
+                CsrMatrix<T> matrix = m_Matrix;
                 if (m_Version != matrix.m_Version)
                     throw new InvalidOperationException();
                 m_Index++;
@@ -98,7 +98,7 @@ namespace AIlins.Thresher
                         return false;
                     }
                 }
-                m_Current = new CSRMatrixVector<T>(m_Index, m_Matrix, m_IsColumn);
+                m_Current = new CsrMatrixVector<T>(m_Index, m_Matrix, m_IsColumn);
                 return true;
             }
             /// <summary>Sets the enumerator to its initial position, which is before the first element in the collection.</summary>
@@ -114,12 +114,12 @@ namespace AIlins.Thresher
             {
             }
         }
-        public class CSRMatrixVector<T> : VectorT<T>
+        internal class CsrMatrixVector<T> : Vector<T>
         {
             #region Classes, structures, enumerators
             public struct Enumerator : IEnumerator<Element<T>>, IEnumerator
             {
-                private CSRMatrixVector<T> m_Vector;
+                private CsrMatrixVector<T> m_Vector;
                 private int m_Index;
                 private int m_Version;
                 private Element<T> m_Current;
@@ -147,7 +147,7 @@ namespace AIlins.Thresher
                         return m_Current;
                     }
                 }
-                internal Enumerator(CSRMatrixVector<T> vector, bool isColumn = false)
+                internal Enumerator(CsrMatrixVector<T> vector, bool isColumn = false)
                 {
                     m_Vector = vector;
                     m_Index = vector.m_Start - 1;
@@ -162,7 +162,7 @@ namespace AIlins.Thresher
                 {
                     if (m_Version != m_Vector.m_Matrix.m_Version)
                         throw new InvalidOperationException();
-                    CSRMatrixVector<T> vector = m_Vector;
+                    CsrMatrixVector<T> vector = m_Vector;
                     if (m_IsColumn)
                     {
                         m_Index++;
@@ -224,7 +224,7 @@ namespace AIlins.Thresher
             }
             #endregion Classes, structures, enumerators
             #region Constructors
-            public CSRMatrixVector(int number, CSRMatrix<T> matrix, bool isColumn)
+            public CsrMatrixVector(int number, CsrMatrix<T> matrix, bool isColumn)
                 : base()
             {
                 m_Number = number;
@@ -239,7 +239,7 @@ namespace AIlins.Thresher
             /// <summary>
             /// Data value
             /// </summary>
-            internal CSRMatrix<T> m_Matrix;
+            internal CsrMatrix<T> m_Matrix;
             /// <summary>
             /// Number of elements of the vector.
             /// </summary>
@@ -330,7 +330,7 @@ namespace AIlins.Thresher
                     }
                 }
             }
-            public override void CopyTo(VectorT<T> vector, int index = 0, int arrayIndex = 0, int length = int.MaxValue)
+            public override void CopyTo(Vector<T> vector, int index = 0, int arrayIndex = 0, int length = int.MaxValue)
             {
                 if (m_Version != m_Matrix.m_Version)
                     throw new InvalidOperationException();
@@ -345,11 +345,11 @@ namespace AIlins.Thresher
         }
         #endregion Classes, structures, enums
         #region Constructors
-        public CSRMatrix(int n)
+        public CsrMatrix(int n)
             :this(0, n)
         {
         }
-        public CSRMatrix(int m, int n, int capacity = 0)
+        public CsrMatrix(int m, int n, int capacity = 0)
         {
             m_Values = new T[capacity];
             m_Columns = new int[capacity];
@@ -580,13 +580,13 @@ namespace AIlins.Thresher
         #region  Events, overrides
         #region Explicit
         #endregion Explicit
-        public override VectorT<T> Row(int i)
+        public override Vector<T> Row(int i)
         {
-            return new CSRMatrixVector<T>(i, this, false);
+            return new CsrMatrixVector<T>(i, this, false);
         }
-        public override VectorT<T> Column(int i)
+        public override Vector<T> Column(int i)
         {
-            return new CSRMatrixVector<T>(i, this, true);
+            return new CsrMatrixVector<T>(i, this, true);
         }
         /// <summary>
         /// Add new row to matrix, increase rows count
@@ -801,9 +801,9 @@ namespace AIlins.Thresher
             for (int i = rowIndex; i < m_RowsCount; ++i)
                 m_RowsMapping[i + 1] += shift;
         }
-        public override IEnumerator<VectorT<T>> GetEnumerator()
+        public override IEnumerator<Vector<T>> GetEnumerator()
         {
-            return new CSREnumerator(this);
+            return new CsrEnumerator(this);
         }
         /// <summary>
         /// Copy constructor
@@ -811,7 +811,7 @@ namespace AIlins.Thresher
         /// <param name="value"></param>
         public override object Clone()
         {
-            CSRMatrix<T> returnValue = new CSRMatrix<T>(m_RowsCount, m_ColumnsCount, Capacity);
+            CsrMatrix<T> returnValue = new CsrMatrix<T>(m_RowsCount, m_ColumnsCount, Capacity);
             Array.Copy(m_RowsMapping, returnValue.m_RowsMapping, m_RowsMapping.Length);
             Array.Copy(m_Columns, returnValue.m_Columns, m_Columns.Length);
             Array.Copy(m_Values, returnValue.m_Values, m_Values.Length);

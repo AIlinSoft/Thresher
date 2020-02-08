@@ -24,15 +24,15 @@ using System.Text;
 #region Working namespace
 namespace AIlins.Thresher
 {
-    public abstract class VectorT<T> : IEnumerable<Element<T>>
+    public abstract class Vector<T> : IEnumerable<Element<T>>
     {
         #region Classes, structures, enumerators
         #endregion Classes, structures, enumerators
         #region Constructors
-        public VectorT()
+        public Vector()
         {
         }
-        ~VectorT()
+        ~Vector()
         {
 
         }
@@ -47,7 +47,7 @@ namespace AIlins.Thresher
         #region Methods
         #region Public methods
         public abstract void CopyTo(T[] array, int index = 0, int arrayIndex = 0, int length = int.MaxValue);
-        public abstract void CopyTo(VectorT<T> vector, int index = 0, int arrayIndex = 0, int length = int.MaxValue);
+        public abstract void CopyTo(Vector<T> vector, int index = 0, int arrayIndex = 0, int length = int.MaxValue);
         #endregion Public methods
         #region Internal methods
         #endregion Internal methods
@@ -61,23 +61,23 @@ namespace AIlins.Thresher
         }
         public override bool Equals(object obj)
         {
-            return this == (obj as VectorT<T>);
+            return this == (obj as Vector<T>);
         }
         public override int GetHashCode()
         {
             return base.GetHashCode();
         }
-        public static bool operator ==(VectorT<T> a, VectorT<T> b)
+        public static bool operator ==(Vector<T> a, Vector<T> b)
         {
             object a1 = (object)a;
             object b1 = (object)b;
             return a1 == b1 || (a1 != null && b1 != null && EqualsHelper(a, b));
         }
-        public static bool operator !=(VectorT<T> a, VectorT<T> b)
+        public static bool operator !=(Vector<T> a, Vector<T> b)
         {
             return !(a == b);
         }
-        private static bool EqualsHelper(VectorT<T> a, VectorT<T> b)
+        private static bool EqualsHelper(Vector<T> a, Vector<T> b)
         {
             if (a.Count != b.Count)
                 return false;
@@ -97,56 +97,56 @@ namespace AIlins.Thresher
                     return false;
             }
         }
-        public static VectorT<T> operator +(VectorT<T> value1, VectorT<T> value2)
+        public static Vector<T> operator +(Vector<T> value1, Vector<T> value2)
         {
             FullVector<T> returnValue = null;
             var solver = SolversResolver.GetMatrixSolver<T>();
             solver.Addition(value1, value2, ref returnValue);
             return returnValue;
         }
-        public static VectorT<T> operator +(VectorT<T> value1, T value2)
+        public static Vector<T> operator +(Vector<T> value1, T value2)
         {
             FullVector<T> returnValue = null;
             var solver = SolversResolver.GetMatrixSolver<T>();
             solver.Addition(value1, value2, ref returnValue);
             return returnValue;
         }
-        public static VectorT<T> operator -(VectorT<T> value1, VectorT<T> value2)
+        public static Vector<T> operator -(Vector<T> value1, Vector<T> value2)
         {
             FullVector<T> returnValue = null;
             var solver = SolversResolver.GetMatrixSolver<T>();
             solver.Substraction(value1, value2, ref returnValue);
             return returnValue;
         }
-        public static VectorT<T> operator -(VectorT<T> value)
+        public static Vector<T> operator -(Vector<T> value)
         {
             FullVector<T> returnValue = null;
             var solver = SolversResolver.GetMatrixSolver<T>();
             solver.Negation(value, ref returnValue);
             return returnValue;
         }
-        public static VectorT<T> operator *(VectorT<T> value1, T value2)
+        public static Vector<T> operator *(Vector<T> value1, T value2)
         {
             FullVector<T> returnValue = null;
             var solver = SolversResolver.GetMatrixSolver<T>();
             solver.Multiply(value1, value2, ref returnValue);
             return returnValue;
         }
-        public static VectorT<T> operator *(VectorT<T> value1, VectorT<T> value2)
+        public static Vector<T> operator *(Vector<T> value1, Vector<T> value2)
         {
             FullVector<T> returnValue = null;
             var solver = SolversResolver.GetMatrixSolver<T>();
             solver.Multiply(value1, value2, ref returnValue);
             return returnValue;
         }
-        public static VectorT<T> operator /(VectorT<T> value1, VectorT<T> value2)
+        public static Vector<T> operator /(Vector<T> value1, Vector<T> value2)
         {
             FullVector<T> returnValue = null;
             var solver = SolversResolver.GetMatrixSolver<T>();
             solver.Division(value1, value2, ref returnValue);
             return returnValue;
         }
-        public static VectorT<T> operator /(VectorT<T> value1, T value2)
+        public static Vector<T> operator /(Vector<T> value1, T value2)
         {
             FullVector<T> returnValue = null;
             var gSolver = SolversResolver.GetGenericSolver<T>();
@@ -160,12 +160,12 @@ namespace AIlins.Thresher
             StringBuilder returnValue = new StringBuilder(Count * 10);
             foreach (Element<T> item in this)
             {
-                returnValue.AppendLine(string.Format("{0} {1}", item.Index, item.Value));
-                //returnValue.Append("(");
-                //returnValue.Append(item.Index);
-                //returnValue.Append(";");
-                //returnValue.Append(item.Value);
-                //returnValue.Append("),");
+                // returnValue.AppendLine(string.Format("{0} {1}", item.Index, item.Value));
+                returnValue.Append("(");
+                returnValue.Append(item.Index);
+                returnValue.Append(";");
+                returnValue.Append(item.Value);
+                returnValue.Append("),");
             }
             return returnValue.ToString();
         }

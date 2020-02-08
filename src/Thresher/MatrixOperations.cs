@@ -291,7 +291,7 @@ namespace AIlins.Thresher
             returnValue.m_Values = tempResult;
             return returnValue;
         }
-        unsafe public static CSRMatrix<double> Addition(CSRMatrix<double> value1, CSRMatrix<double> value2) 
+        unsafe public static CsrMatrix<double> Addition(CsrMatrix<double> value1, CsrMatrix<double> value2) 
         {
             int m = value1.RowsCount;
             int n = value2.ColumnsCount;
@@ -299,7 +299,7 @@ namespace AIlins.Thresher
                 throw new Exception("Rows counts of first and second matrices not equals!");
             if (value2.ColumnsCount != n)
                 throw new Exception("Columns counts of first and second matrices not equals!");
-            CSRMatrix<double> returnValue = new CSRMatrix<double>(0, 0, n);
+            CsrMatrix<double> returnValue = new CsrMatrix<double>(0, 0, n);
 
             //uint[] valueArray1 = value1.Values;
             //int[] rowBegins1 = value1.RowBegin;
@@ -572,7 +572,7 @@ namespace AIlins.Thresher
             returnValue.m_Values = tempResult;
             return returnValue;
         }
-        unsafe public static CSRMatrix<Complex> Addition(CSRMatrix<Complex> value1, CSRMatrix<Complex> value2)
+        unsafe public static CsrMatrix<Complex> Addition(CsrMatrix<Complex> value1, CsrMatrix<Complex> value2)
         {
             int m = value1.RowsCount;
             int n = value1.ColumnsCount;
@@ -581,7 +581,7 @@ namespace AIlins.Thresher
             if (value2.ColumnsCount != n)
                 throw new Exception("Columns counts of first and second matrices not equals!");
 
-            CSRMatrix<Complex> returnValue = new CSRMatrix<Complex>(n);
+            CsrMatrix<Complex> returnValue = new CsrMatrix<Complex>(n);
 
             fixed (Complex* values1Pointer = value1.m_Values, values2Pointer = value2.m_Values)
             fixed (int* rowIndex1Pointer = value1.m_RowsMapping, rowIndex2Pointer = value2.m_RowsMapping, columns1Pointer = value1.m_Columns, columns2Pointer = value2.m_Columns)
@@ -610,7 +610,7 @@ namespace AIlins.Thresher
             }
             return returnValue;
         }
-        unsafe public static void Addition(CSRMatrix<Complex> value1, FullMatrix<Complex> value2, FullMatrix<Complex> result) { }
+        unsafe public static void Addition(CsrMatrix<Complex> value1, FullMatrix<Complex> value2, FullMatrix<Complex> result) { }
         #endregion Complex
         #endregion Addition
         #region Substraction
@@ -1031,7 +1031,7 @@ namespace AIlins.Thresher
             returnValue.m_Values = tempResult;
             return returnValue;
         }
-        unsafe public static CSRMatrix<Complex> Substraction(CSRMatrix<Complex> value1, CSRMatrix<Complex> value2)
+        unsafe public static CsrMatrix<Complex> Substraction(CsrMatrix<Complex> value1, CsrMatrix<Complex> value2)
         {
             int m = value1.RowsCount;
             int n = value2.ColumnsCount;
@@ -1039,7 +1039,7 @@ namespace AIlins.Thresher
                 throw new Exception("Rows counts of first and second matrices not equals!");
             if (value2.ColumnsCount != n)
                 throw new Exception("Columns counts of first and second matrices not equals!");
-            CSRMatrix<Complex> returnValue = new CSRMatrix<Complex>(n);
+            CsrMatrix<Complex> returnValue = new CsrMatrix<Complex>(n);
 
             fixed (Complex* values1Pointer = value1.m_Values, values2Pointer = value2.m_Values)
             fixed (int* rowIndex1Pointer = value1.m_RowsMapping, rowIndex2Pointer = value2.m_RowsMapping, columns1Pointer = value1.m_Columns, columns2Pointer = value2.m_Columns)
@@ -1435,7 +1435,7 @@ namespace AIlins.Thresher
         //    return returnValue;
         //}
 
-        unsafe public static FullMatrix<double> Multiply(CSRMatrix<double> value1, FullMatrix<double> value2)
+        unsafe public static FullMatrix<double> Multiply(CsrMatrix<double> value1, FullMatrix<double> value2)
         {
             int m1 = value1.RowsCount;
             int n1 = value1.ColumnsCount;
@@ -1480,7 +1480,7 @@ namespace AIlins.Thresher
             returnValue.m_Values = tempResult;
             return returnValue;
         }
-        unsafe public static FullMatrix<double> Multiply(FullMatrix<double> value1, CSRMatrix<double> value2)
+        unsafe public static FullMatrix<double> Multiply(FullMatrix<double> value1, CsrMatrix<double> value2)
         {
             int m1 = value1.m_RowsCount;
             int n1 = value1.m_ColumnsCount;
@@ -1675,14 +1675,14 @@ namespace AIlins.Thresher
         //    }
         //    return returnValue;
         //}
-        unsafe public static CSRMatrix<Complex> Multiply(CSRMatrix<Complex> value1, CSRMatrix<Complex> value2) 
+        unsafe public static CsrMatrix<Complex> Multiply(CsrMatrix<Complex> value1, CsrMatrix<Complex> value2) 
         {
             int m = value1.RowsCount;
             int n = value2.ColumnsCount;
             if (value2.RowsCount != value1.ColumnsCount)
                 throw new Exception("Rows count of first matrix not equal to columns count of second matrix!");
-            CSRMatrix<Complex> returnValue = new CSRMatrix<Complex>((value1.m_RowsMapping[value1.m_RowsCount] + value2.m_RowsMapping[value2.m_RowsCount]) / 2, 0, m);
-            CSRMatrix<Complex> tempValue2 = Transpose(value2);
+            CsrMatrix<Complex> returnValue = new CsrMatrix<Complex>((value1.m_RowsMapping[value1.m_RowsCount] + value2.m_RowsMapping[value2.m_RowsCount]) / 2, 0, m);
+            CsrMatrix<Complex> tempValue2 = Transpose(value2);
 
             fixed (Complex* values1Pointer = value1.m_Values, values2Pointer = tempValue2.m_Values)
             fixed (int* columns1Pointer = value1.m_Columns, columns2Pointer = tempValue2.m_Columns)
@@ -1721,7 +1721,7 @@ namespace AIlins.Thresher
             return returnValue;
         }
 
-        unsafe public static FullMatrix<Complex> Multiply(CSRMatrix<Complex> value1, FullMatrix<Complex> value2) 
+        unsafe public static FullMatrix<Complex> Multiply(CsrMatrix<Complex> value1, FullMatrix<Complex> value2) 
         {
             int m1 = value1.RowsCount;
             int n1 = value1.ColumnsCount;
@@ -1766,7 +1766,7 @@ namespace AIlins.Thresher
             returnValue.m_Values = tempResult;
             return returnValue;
         }
-        public static FullMatrix<Complex> Multiply(FullMatrix<Complex> value1, CSRMatrix<Complex> value2) 
+        public static FullMatrix<Complex> Multiply(FullMatrix<Complex> value1, CsrMatrix<Complex> value2) 
         {
             return null;
             //int m1 = value1.RowCount;
@@ -2033,14 +2033,14 @@ namespace AIlins.Thresher
         //}
         #endregion Complex
         #region Block
-        unsafe public static CSRMatrix<Block2x2> MultiplyTest(CSRMatrix<Block2x2> value1, CSRMatrix<Block2x2> value2)
+        unsafe public static CsrMatrix<Block2x2> MultiplyTest(CsrMatrix<Block2x2> value1, CsrMatrix<Block2x2> value2)
         {
             int tick = Environment.TickCount;
             int m = value1.RowsCount, all = 0;
             int n = value2.ColumnsCount;
             if (value2.RowsCount != value1.ColumnsCount)
                 throw new Exception("Rows count of first matrix not equal to columns count of second matrix!");
-            CSRMatrix<Block2x2> tempValue2 = Transpose(value2);
+            CsrMatrix<Block2x2> tempValue2 = Transpose(value2);
             Console.WriteLine("Транспонирование " + (Environment.TickCount - tick));
             tick = Environment.TickCount;
             // Temp row for return saving
@@ -2099,7 +2099,7 @@ namespace AIlins.Thresher
             }
             Console.WriteLine("Умножение " + (Environment.TickCount - tick));
             tick = Environment.TickCount;
-            CSRMatrix<Block2x2> returnValue = new CSRMatrix<Block2x2>(all, m, n);
+            CsrMatrix<Block2x2> returnValue = new CsrMatrix<Block2x2>(all, m, n);
             int pos = 0;
             int i1 = 0;
             for (; i1 < m; ++i1)
@@ -2113,14 +2113,14 @@ namespace AIlins.Thresher
             Console.WriteLine("Копирование " + (Environment.TickCount - tick));
             return returnValue;
         }
-        unsafe public static CSRMatrix<Block2x2> MultiplyOld(CSRMatrix<Block2x2> value1, CSRMatrix<Block2x2> value2)
+        unsafe public static CsrMatrix<Block2x2> MultiplyOld(CsrMatrix<Block2x2> value1, CsrMatrix<Block2x2> value2)
         {
             int tick = Environment.TickCount;
             int m = value1.RowsCount, all = 0;
             int n = value2.ColumnsCount;
             if (value2.RowsCount != value1.ColumnsCount)
                 throw new Exception("Rows count of first matrix not equal to columns count of second matrix!");
-            CSRMatrix<Block2x2> tempValue2 = Transpose(value2);
+            CsrMatrix<Block2x2> tempValue2 = Transpose(value2);
             Console.WriteLine("Транспонирование " + (Environment.TickCount - tick));
             tick = Environment.TickCount;
             // Temp row for return saving
@@ -2179,7 +2179,7 @@ namespace AIlins.Thresher
             }
             Console.WriteLine("Умножение " + (Environment.TickCount - tick));
             tick = Environment.TickCount;
-            CSRMatrix<Block2x2> returnValue = new CSRMatrix<Block2x2>(all, m, n);
+            CsrMatrix<Block2x2> returnValue = new CsrMatrix<Block2x2>(all, m, n);
             int pos = 0;
             int i1 = 0;
             for (; i1 < m; ++i1)
@@ -2319,7 +2319,7 @@ namespace AIlins.Thresher
         //    FCSRMatrix<Block2x2> returnValue = MultiplyInternal(value1, value2);
         //    return Convert(returnValue);
         //}
-        unsafe public static FullMatrix<Block2x2> Multiply(CSRMatrix<Block2x2> value1, FullMatrix<Block2x2> value2)
+        unsafe public static FullMatrix<Block2x2> Multiply(CsrMatrix<Block2x2> value1, FullMatrix<Block2x2> value2)
         {
             int m1 = value1.RowsCount;
             int n1 = value1.ColumnsCount;
@@ -2695,7 +2695,7 @@ namespace AIlins.Thresher
             QrDecomposition(m2, n2, valueTemp, diagonal);
             QrSolve(m2, n2, valueTemp, m1, n1, value1, diagonal, result);
         }
-        unsafe public static FullMatrix<double> QrDivide(FullMatrix<double> value1, CSRMatrix<double> value2) 
+        unsafe public static FullMatrix<double> QrDivide(FullMatrix<double> value1, CsrMatrix<double> value2) 
         {
             if (value1.RowsCount != value2.RowsCount)
                 throw new System.ArgumentException("Row dimensions must agree.");
@@ -2897,7 +2897,7 @@ namespace AIlins.Thresher
         //    }
         //    return returnValue;
         //}
-        unsafe public static FullMatrix<double> ZeidelDivide(FullMatrix<double> b, CSRMatrix<double> a)
+        unsafe public static FullMatrix<double> ZeidelDivide(FullMatrix<double> b, CsrMatrix<double> a)
         {
             double eps = 0.00001;
             FullMatrix<double> x = new FullMatrix<double>(a.RowsCount, b.ColumnsCount);
@@ -2928,7 +2928,7 @@ namespace AIlins.Thresher
         //{
         //    return LuSolve(LuDecomposition(a), b);
         //}
-        private static int[] GetPivots(CSRMatrix<double> value)
+        private static int[] GetPivots(CsrMatrix<double> value)
         {
             int[] returnValue = new int[value.RowsCount];
             for (int i = 0; i < returnValue.Length; ++i)
@@ -3191,9 +3191,9 @@ namespace AIlins.Thresher
         /// </summary>
         /// <param name="value">Transpozed matrix</param>
         /// <param name="result">Result of operation</param>
-        unsafe public static CSRMatrix<double> Transpose(CSRMatrix<double> value)
+        unsafe public static CsrMatrix<double> Transpose(CsrMatrix<double> value)
         {
-            CSRMatrix<double> returnValue = new CSRMatrix<double>(value.m_RowsMapping[value.m_RowsCount], value.ColumnsCount, value.RowsCount);
+            CsrMatrix<double> returnValue = new CsrMatrix<double>(value.m_RowsMapping[value.m_RowsCount], value.ColumnsCount, value.RowsCount);
 
             int[] indexes = new int[value.RowsCount];
             int[] ends = new int[value.RowsCount];
@@ -3414,9 +3414,9 @@ namespace AIlins.Thresher
         /// </summary>
         /// <param name="value">Transpozed matrix</param>
         /// <param name="result">Result of operation</param>
-        unsafe public static CSRMatrix<Complex> Transpose(CSRMatrix<Complex> value)
+        unsafe public static CsrMatrix<Complex> Transpose(CsrMatrix<Complex> value)
         {
-            CSRMatrix<Complex> returnValue = new CSRMatrix<Complex>(value.m_RowsMapping[value.m_RowsCount], value.ColumnsCount, value.RowsCount);
+            CsrMatrix<Complex> returnValue = new CsrMatrix<Complex>(value.m_RowsMapping[value.m_RowsCount], value.ColumnsCount, value.RowsCount);
 
             int[] indexes = new int[value.RowsCount];
             int[] ends = new int[value.RowsCount];
@@ -3453,9 +3453,9 @@ namespace AIlins.Thresher
         /// </summary>
         /// <param name="value">Transpozed matrix</param>
         /// <param name="result">Result of operation</param>
-        unsafe public static CSRMatrix<Block2x2> Transpose(CSRMatrix<Block2x2> value)
+        unsafe public static CsrMatrix<Block2x2> Transpose(CsrMatrix<Block2x2> value)
         {
-            CSRMatrix<Block2x2> returnValue = new CSRMatrix<Block2x2>(value.m_RowsMapping[value.m_RowsCount], value.ColumnsCount, value.RowsCount);
+            CsrMatrix<Block2x2> returnValue = new CsrMatrix<Block2x2>(value.m_RowsMapping[value.m_RowsCount], value.ColumnsCount, value.RowsCount);
 
             int[] indexes = new int[value.RowsCount];
             int[] ends = new int[value.RowsCount];
@@ -3964,7 +3964,7 @@ namespace AIlins.Thresher
         //    //Console.WriteLine("st10 " + st10);
         //    return returnValue;
         //}
-        public static unsafe CSRMatrix<Block2x2> LuDecompositionTest(CSRMatrix<Block2x2> a)
+        public static unsafe CsrMatrix<Block2x2> LuDecompositionTest(CsrMatrix<Block2x2> a)
         {
             int m = a.m_RowsCount;
             int n = a.m_ColumnsCount;
@@ -4121,7 +4121,7 @@ namespace AIlins.Thresher
                     retRowIndexes[i + 1] = retHead;
                     
                 }
-            CSRMatrix<Block2x2> returnValue = new CSRMatrix<Block2x2>(retHead, m, n);
+            CsrMatrix<Block2x2> returnValue = new CsrMatrix<Block2x2>(retHead, m, n);
             //Array.Copy(retValues, returnValue.m_Values, retHead);
             //Array.Copy(retColumns, returnValue.m_Columns, retHead);
             returnValue.m_RowsMapping = retRowIndexes;
@@ -5970,21 +5970,21 @@ namespace AIlins.Thresher
         {
             return null;
         }
-        public static CSRMatrix<double> AsReal(CSRMatrix<Complex> value)
+        public static CsrMatrix<double> AsReal(CsrMatrix<Complex> value)
         {
             return AsRealAndImage(value)[0];
         }
-        public static CSRMatrix<double> AsImage(CSRMatrix<Complex> value)
+        public static CsrMatrix<double> AsImage(CsrMatrix<Complex> value)
         {
             return AsRealAndImage(value)[1];
         }
         
-        unsafe public static CSRMatrix<double>[] AsRealAndImage(CSRMatrix<Complex> value)
+        unsafe public static CsrMatrix<double>[] AsRealAndImage(CsrMatrix<Complex> value)
         {
             int m = value.RowsCount;
             int n = value.ColumnsCount;
-            CSRMatrix<double> realMatrix = new CSRMatrix<double>(value.m_RowsMapping[value.m_RowsCount], m, n);
-            CSRMatrix<double> imaginaryMatrix = new CSRMatrix<double>(value.m_RowsMapping[value.m_RowsCount], m, n);
+            CsrMatrix<double> realMatrix = new CsrMatrix<double>(value.m_RowsMapping[value.m_RowsCount], m, n);
+            CsrMatrix<double> imaginaryMatrix = new CsrMatrix<double>(value.m_RowsMapping[value.m_RowsCount], m, n);
             int[] rowIndex1 = realMatrix.m_RowsMapping;
             int[] rowIndex2 = imaginaryMatrix.m_RowsMapping;
             int[] rowIndex = value.m_RowsMapping;
@@ -6026,7 +6026,7 @@ namespace AIlins.Thresher
                     rowIndex2[i + 1] = index2;
                 }
             }
-            return new CSRMatrix<double>[2] { realMatrix, imaginaryMatrix };
+            return new CsrMatrix<double>[2] { realMatrix, imaginaryMatrix };
         }
         #endregion Conversion
         #region Other
@@ -6983,7 +6983,7 @@ namespace AIlins.Thresher
         #endregion Old
         #region Copy
         #region double
-        unsafe public static void Copy(int m1, int n1, CSRMatrix<double> value1, int m2, int n2, CSRMatrix<double> value2, int rowLength, int columnLength)
+        unsafe public static void Copy(int m1, int n1, CsrMatrix<double> value1, int m2, int n2, CsrMatrix<double> value2, int rowLength, int columnLength)
         {
 
 
@@ -7002,7 +7002,7 @@ namespace AIlins.Thresher
         /// <param name="value1"></param>
         /// <param name="numbers"></param>
         /// <returns></returns>
-        unsafe public static CSRMatrix<double> RemoveColumns(CSRMatrix<double> value1, int[] numbers)
+        unsafe public static CsrMatrix<double> RemoveColumns(CsrMatrix<double> value1, int[] numbers)
         {
             int m = value1.RowsCount;
             int n1 = value1.ColumnsCount;
@@ -7021,7 +7021,7 @@ namespace AIlins.Thresher
                     renums[i] = n++;
             }
 
-            CSRMatrix<double> returnValue = new CSRMatrix<double>(value1.m_RowsMapping[value1.m_RowsCount], m, n);
+            CsrMatrix<double> returnValue = new CsrMatrix<double>(value1.m_RowsMapping[value1.m_RowsCount], m, n);
 
             fixed (double* values1Pointer = value1.m_Values, valuesPointer = returnValue.m_Values)
             fixed (int* columns1Pointer = value1.m_Columns, columnsPointer = returnValue.m_Columns)
@@ -7050,7 +7050,7 @@ namespace AIlins.Thresher
             }
             return returnValue;
         }
-        unsafe public static int[] EmptyColumns(CSRMatrix<double> value)
+        unsafe public static int[] EmptyColumns(CsrMatrix<double> value)
         {
             int m = value.RowsCount;
             int n = value.ColumnsCount;
@@ -7118,7 +7118,7 @@ namespace AIlins.Thresher
         //}
         #region Concat
         #region double
-        unsafe public static CSRMatrix<double> GorizontalConcatination(CSRMatrix<double> value1, CSRMatrix<double> value2)
+        unsafe public static CsrMatrix<double> GorizontalConcatination(CsrMatrix<double> value1, CsrMatrix<double> value2)
         {
             int m = value1.RowsCount;
             int n1 = value1.ColumnsCount;
@@ -7126,7 +7126,7 @@ namespace AIlins.Thresher
             int n = n1 + n2;
             if (value2.RowsCount != m)
                 throw new Exception("Rows counts of first and second matrices not equals!");
-            CSRMatrix<double> returnValue = new CSRMatrix<double>(value1.m_RowsMapping[value1.m_RowsCount] + value2.m_RowsMapping[value2.m_RowsCount], m, n);
+            CsrMatrix<double> returnValue = new CsrMatrix<double>(value1.m_RowsMapping[value1.m_RowsCount] + value2.m_RowsMapping[value2.m_RowsCount], m, n);
             fixed (double* values1Pointer = value1.m_Values, values2Pointer = value2.m_Values, valuesPointer = returnValue.m_Values)
             fixed (int* columns1Pointer = value1.m_Columns, columns2Pointer = value2.m_Columns, columnsPointer = returnValue.m_Columns)
             {
@@ -7161,11 +7161,11 @@ namespace AIlins.Thresher
             }
             return returnValue;
         }
-        unsafe public static CSRMatrix<double> VerticalConcatination(CSRMatrix<double> value1, CSRMatrix<double> value2)
+        unsafe public static CsrMatrix<double> VerticalConcatination(CsrMatrix<double> value1, CsrMatrix<double> value2)
         {
             int m = value1.RowsCount;
             int n = value1.ColumnsCount;
-            CSRMatrix<double> realMatrix = new CSRMatrix<double>(value1.Capacity, m, n);
+            CsrMatrix<double> realMatrix = new CsrMatrix<double>(value1.Capacity, m, n);
 
             return realMatrix;
         }

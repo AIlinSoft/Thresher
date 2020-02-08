@@ -30,7 +30,7 @@ namespace AIlins.Thresher
     /// <summary>
     /// Matrices database
     /// </summary>
-    public abstract class Matrix<T> : IEnumerable<VectorT<T>>, ICloneable
+    public abstract class Matrix<T> : IEnumerable<Vector<T>>, ICloneable
     {
         #region Classes, structures, enums
         #endregion Classes, structures, enums
@@ -65,8 +65,8 @@ namespace AIlins.Thresher
         #endregion Fields
         #region Methods
         #region Public methods
-        public abstract VectorT<T> Row(int i);
-        public abstract VectorT<T> Column(int i);
+        public abstract Vector<T> Row(int i);
+        public abstract Vector<T> Column(int i);
         /// <summary>
         /// Add new row to matrix, increase rows count
         /// </summary>
@@ -78,7 +78,7 @@ namespace AIlins.Thresher
         /// </summary>
         /// <param name="rowIndex">Index of inserting row</param>
         /// <param name="values">Vector of row elements</param>
-        public virtual void AddRow(VectorT<T> values, int rowIndex = int.MaxValue)
+        public virtual void AddRow(Vector<T> values, int rowIndex = int.MaxValue)
         {
             if (values.Count != ColumnsCount)
                 throw new ArgumentOutOfRangeException("values");
@@ -103,7 +103,7 @@ namespace AIlins.Thresher
         /// </summary>
         /// <param name="columnIndex">Index of inserting column</param>
         /// <param name="values">Vector of column elements</param>
-        public virtual void AddColumn(VectorT<T> values, int columnIndex = int.MaxValue)
+        public virtual void AddColumn(Vector<T> values, int columnIndex = int.MaxValue)
         {
             if (values.Count != RowsCount)
                 throw new ArgumentOutOfRangeException("values");
@@ -142,7 +142,7 @@ namespace AIlins.Thresher
         /// </summary>
         /// <param name="rowIndex">Index of changing row</param>
         /// <param name="values">Vector of row elements</param>
-        public virtual void SetRow(VectorT<T> values, int rowIndex = 0)
+        public virtual void SetRow(Vector<T> values, int rowIndex = 0)
         {
             if (values.Count != ColumnsCount)
                 throw new ArgumentOutOfRangeException("values");
@@ -171,7 +171,7 @@ namespace AIlins.Thresher
         /// </summary>
         /// <param name="columnIndex">Index of changing column</param>
         /// <param name="values">Vector of column elements</param>
-        public virtual void SetColumn(VectorT<T> values, int columnIndex = 0)
+        public virtual void SetColumn(Vector<T> values, int columnIndex = 0)
         {
             if (values.Count != RowsCount)
                 throw new ArgumentOutOfRangeException("values");
@@ -200,7 +200,7 @@ namespace AIlins.Thresher
         }
         #endregion Private methods
         #region  Events, overrides
-        public abstract IEnumerator<VectorT<T>> GetEnumerator();
+        public abstract IEnumerator<Vector<T>> GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -258,7 +258,7 @@ namespace AIlins.Thresher
             solver.Multiply(value1, value2, ref returnValue);
             return returnValue;
         }
-        public static VectorT<T> operator /(VectorT<T> value1, Matrix<T> value2)
+        public static Vector<T> operator /(Vector<T> value1, Matrix<T> value2)
         {
             FullVector<T> returnValue = null;
             var solver = SolversResolver.GetMatrixSolver<T>();
@@ -269,7 +269,7 @@ namespace AIlins.Thresher
         {
             StringBuilder returnValue = new StringBuilder(RowsCount * 5);
             int i = 0;
-            foreach (VectorT<T> item in this)
+            foreach (Vector<T> item in this)
             {
                 foreach(Element<T> item1 in item)
                     if(!item1.Value.Equals(default(T)))

@@ -28,16 +28,16 @@ namespace AIlins.Thresher
     public class FullMatrix<T> : Matrix<T>
     {
         #region Classes, structures, enumerators
-        public struct FullEnumerator : IEnumerator<VectorT<T>>, IEnumerator
+        public struct FullEnumerator : IEnumerator<Vector<T>>, IEnumerator
         {
             private FullMatrix<T> m_Matrix;
             private int m_Index;
             private int m_Version;
-            private VectorT<T> m_Current;
+            private Vector<T> m_Current;
             private bool m_IsColumn;
             /// <summary>Gets the element at the current position of the enumerator.</summary>
             /// <returns>The element in the <see cref="T:System.Collections.Generic.List`1" /> at the current position of the enumerator.</returns>
-            public VectorT<T> Current
+            public Vector<T> Current
             {
                 get
                 {
@@ -108,7 +108,7 @@ namespace AIlins.Thresher
             {
             }
         }
-        public class FullMatrixVector<T> : VectorT<T>
+        public class FullMatrixVector<T> : Vector<T>
         {
             #region Classes, structures, enumerators
             public struct Enumerator : IEnumerator<Element<T>>, IEnumerator
@@ -293,7 +293,7 @@ namespace AIlins.Thresher
                 else
                     Array.Copy(m_Matrix.m_Values, m_Number * m_Matrix.m_ColumnsCount + index, array, arrayIndex, length);
             }
-            public override void CopyTo(VectorT<T> vector, int index = 0, int arrayIndex = 0, int length = int.MaxValue)
+            public override void CopyTo(Vector<T> vector, int index = 0, int arrayIndex = 0, int length = int.MaxValue)
             {
                 ThrowHelper<T>.ThrowIfNull(vector, "vector");
                 FullVector<T> fullVector = vector as FullVector<T>;
@@ -446,11 +446,11 @@ namespace AIlins.Thresher
         #region Private methods
         #endregion Private methods
         #region Events, overrides
-        public override VectorT<T> Row(int i)
+        public override Vector<T> Row(int i)
         {
             return new FullMatrixVector<T>(i, this, false);
         }
-        public override VectorT<T> Column(int i)
+        public override Vector<T> Column(int i)
         {
             return new FullMatrixVector<T>(i, this, true);
         }
@@ -609,7 +609,7 @@ namespace AIlins.Thresher
                     m_Values[m_ColumnsCount * item.Key + columnIndex] = item.Value;
         }
         
-        public override IEnumerator<VectorT<T>> GetEnumerator()
+        public override IEnumerator<Vector<T>> GetEnumerator()
         {
             return new FullEnumerator(this);
         }

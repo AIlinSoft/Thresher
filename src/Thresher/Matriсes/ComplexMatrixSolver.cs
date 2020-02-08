@@ -661,15 +661,15 @@ namespace AIlins.Thresher
             }
             else
             {
-                var csrMatrix = value as CSRMatrix<Complex>;
+                var csrMatrix = value as CsrMatrix<Complex>;
                 if (csrMatrix != null)
                 {
-                    var csrResult = result as CSRMatrix<Complex>;
+                    var csrResult = result as CsrMatrix<Complex>;
                     if (csrResult == null)
                     {
                         if (result != null)
                             throw new NotImplementedException("Result type is different value type");
-                        csrResult = new CSRMatrix<Complex>(csrMatrix.RowsCount, csrMatrix.ColumnsCount, csrMatrix.Capacity);
+                        csrResult = new CsrMatrix<Complex>(csrMatrix.RowsCount, csrMatrix.ColumnsCount, csrMatrix.Capacity);
                     }
                     solver.Conjugate(csrMatrix.m_Values, csrResult.m_Values);
                     if (csrResult != csrMatrix)
@@ -692,7 +692,7 @@ namespace AIlins.Thresher
         /// <param name="valueIndex">A 32-bit integer that represents the index in the <paramref name="value"/> vector at which conjugating begins</param>
         /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> vector at which copying result begins</param>
         /// <remarks>If the <paramref name="result"/> value is null, automatically creates a new instance of the <typeparamref name="FullVector<T>"/></remarks>
-        public virtual void Conjugate(VectorT<Complex> value, ref FullVector<Complex> result, int length = int.MaxValue, int valueIndex = 0, int resultIndex = 0)
+        public virtual void Conjugate(Vector<Complex> value, ref FullVector<Complex> result, int length = int.MaxValue, int valueIndex = 0, int resultIndex = 0)
         {
             var solver = m_ArraySolver as ComplexArraySolver;
             if (solver == null)

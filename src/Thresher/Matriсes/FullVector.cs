@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 #region Working namespace
 namespace AIlins.Thresher
 {
-    public class FullVector<T> : VectorT<T>
+    public class FullVector<T> : Vector<T>
     {
         #region Classes, structures, enumerators
         public struct Enumerator : IEnumerator<Element<T>>, IEnumerator
@@ -121,7 +121,7 @@ namespace AIlins.Thresher
                 Array.Copy(values, m_Values, count);
             }
         }
-        public FullVector(VectorT<T> value)
+        public FullVector(Vector<T> value)
         {
             m_Count = value.Count;
             m_Values = new T[m_Count];
@@ -193,7 +193,7 @@ namespace AIlins.Thresher
         #region Internal methods
         #endregion Internal methods
         #region Private methods
-        private static bool EqualsHelper(FullVector<T> a, VectorT<T> b)
+        private static bool EqualsHelper(FullVector<T> a, Vector<T> b)
         {
             if (a.m_Count != b.Count)
                 return false;
@@ -218,15 +218,15 @@ namespace AIlins.Thresher
         #region Events, overrides
         public override bool Equals(object obj)
         {
-            return this == (obj as VectorT<T>);
+            return this == (obj as Vector<T>);
         }
-        public static bool operator ==(FullVector<T> a, VectorT<T> b)
+        public static bool operator ==(FullVector<T> a, Vector<T> b)
         {
             object a1 = (object)a;
             object b1 = (object)b;
             return a1 == b1 || (a1 != null && b1 != null && EqualsHelper(a, b));
         }
-        public static bool operator !=(FullVector<T> a, VectorT<T> b)
+        public static bool operator !=(FullVector<T> a, Vector<T> b)
         {
             return !(a == b);
         }
@@ -243,7 +243,7 @@ namespace AIlins.Thresher
             ThrowHelper<T>.ThrowIfOutOfRange("arrayIndex", arrayIndex, array.Length, length);
             Array.Copy(m_Values, index, array, arrayIndex, length);
         }
-        public override void CopyTo(VectorT<T> vector, int index = 0, int arrayIndex = 0, int length = int.MaxValue)
+        public override void CopyTo(Vector<T> vector, int index = 0, int arrayIndex = 0, int length = int.MaxValue)
         {
             FullVector<T> fullVector = vector as FullVector<T>;
             if (fullVector == null)

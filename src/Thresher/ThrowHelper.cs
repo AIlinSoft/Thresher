@@ -214,7 +214,7 @@ namespace AIlins.Thresher
             if (index < 0)
                 throw new ArgumentOutOfRangeException(paramName, index, paramName);
         }
-        internal static void ThrowIfNotMultiply(Matrix<T> value1, VectorT<T> value2)
+        internal static void ThrowIfNotMultiply(Matrix<T> value1, Vector<T> value2)
         {
             int n = value1.ColumnsCount;
             if (n != value2.Count)

@@ -1007,7 +1007,7 @@ namespace AIlins.Thresher
                 }
             }
         }
-        unsafe public CSRMatrix<Block2x2> Decomposition(CSRMatrix<Block2x2> a, SolvingContext context = null)
+        unsafe public CsrMatrix<Block2x2> Decomposition(CsrMatrix<Block2x2> a, SolvingContext context = null)
         {
             if (context == null)
                 context = GetSortingContext(a);
@@ -1015,7 +1015,7 @@ namespace AIlins.Thresher
             {
                 int m = a.m_RowsCount;
                 int n = a.m_ColumnsCount;
-                CSRMatrix<Block2x2> returnValue = new CSRMatrix<Block2x2>(m, n, context.m_Count);
+                CsrMatrix<Block2x2> returnValue = new CsrMatrix<Block2x2>(m, n, context.m_Count);
                 Block2x2[] diag = new Block2x2[n];
                 int[] starts = new int[m];
                 Block2x2[] values = new Block2x2[n + 2];
@@ -1137,7 +1137,7 @@ namespace AIlins.Thresher
         }
         #endregion Decomposition
         #region Solve
-        unsafe public void Solve(CSRMatrix<Block2x2> factor, VectorT<Complex> b, ref FullVector<Complex> result)
+        unsafe public void Solve(CsrMatrix<Block2x2> factor, Vector<Complex> b, ref FullVector<Complex> result)
         {
             Th.ThrowIfNull(factor, "value");
             Th.ThrowIfNull(b, "b");
