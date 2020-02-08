@@ -33,6 +33,8 @@ namespace AIlins.Thresher
         #region Classes, structures, enumerators
         #endregion Classes, structures, enumerators
         #region Constructors
+        public ComplexArraySolver()
+            : base(null) { }
         #endregion Constructors
         #region Variables
         #endregion Variables
@@ -52,7 +54,7 @@ namespace AIlins.Thresher
         {
             Th.ThrowOneValueWithNullableResult(value, ref result, ref length, valueIndex, resultIndex);
             fixed (Complex* valuePtr = value, resultPtr = result)
-                Conjugate(valuePtr, resultPtr, length, valueIndex, resultIndex);
+                ComplexArrayHelper.Conjugate(valuePtr, resultPtr, length, valueIndex, resultIndex);
         }
         #endregion Public methods
         #region Internal methods
@@ -128,7 +130,7 @@ namespace AIlins.Thresher
         {
             Th.ThrowIfTwoValuesWithNullableResult(value1, value2, ref result, ref length, value1Index, value2Index, resultIndex);
             fixed (Complex* value1Ptr = value1, value2Ptr = value2, resultPtr = result)
-                Addition((double*)value1Ptr, (double*)value2Ptr, (double*)resultPtr, length * 2, value1Index * 2, value2Index * 2, resultIndex * 2);
+                DoubleArrayHelper.Addition((double*)value1Ptr, (double*)value2Ptr, (double*)resultPtr, length * 2, value1Index * 2, value2Index * 2, resultIndex * 2);
         }
         /// <summary>
         /// Adds the number <paramref name="value2"/> and the elements of array <paramref name="value1"/>
@@ -145,7 +147,7 @@ namespace AIlins.Thresher
         {
             Th.ThrowOneValueWithNullableResult(value1, ref result, ref length, value1Index, resultIndex);
             fixed (Complex* value1Ptr = value1, resultPtr = result)
-                Addition((double*)value1Ptr, value2.Real, value2.Imaginary, (double*)resultPtr, length * 2, value1Index * 2, resultIndex * 2);
+                DoubleArrayHelper.Addition((double*)value1Ptr, value2.Real, value2.Imaginary, (double*)resultPtr, length * 2, value1Index * 2, resultIndex * 2);
         }
         /// <summary>
         /// Summarizes the elements of the array <paramref name="value"/>
@@ -159,7 +161,7 @@ namespace AIlins.Thresher
             Th.ThrowIfOneValue(value, ref length, valueIndex);
             Complex returnValue = 0;
             fixed (Complex* value1Ptr = value)
-                returnValue = Summary(value1Ptr, length, valueIndex);
+                returnValue = ComplexArrayHelper.Summary(value1Ptr, length, valueIndex);
             return returnValue;
         }
         /// <summary>
@@ -177,7 +179,7 @@ namespace AIlins.Thresher
         {
             Th.ThrowIfTwoValuesWithNullableResult(value1, value2, ref result, ref length, value1Index, value2Index, resultIndex);
             fixed (Complex* value1Ptr = value1, value2Ptr = value2, resultPtr = result)
-                Substraction((double*)value1Ptr, (double*)value2Ptr, (double*)resultPtr, length * 2, value1Index * 2, value2Index * 2, resultIndex * 2);
+                DoubleArrayHelper.Substraction((double*)value1Ptr, (double*)value2Ptr, (double*)resultPtr, length * 2, value1Index * 2, value2Index * 2, resultIndex * 2);
         }
         /// <summary>
         /// Negates the elements of the array <paramref name="value"/>
@@ -192,7 +194,7 @@ namespace AIlins.Thresher
         {
             Th.ThrowOneValueWithNullableResult(value, ref result, ref length, valueIndex, resultIndex);
             fixed (Complex* valuePtr = value, resultPtr = result)
-                Negate((double*)valuePtr, (double*)resultPtr, length * 2, valueIndex * 2, resultIndex * 2);
+                DoubleArrayHelper.Negate((double*)valuePtr, (double*)resultPtr, length * 2, valueIndex * 2, resultIndex * 2);
         }
         /// <summary>
         /// Multiplies elements of two arrays
@@ -209,7 +211,7 @@ namespace AIlins.Thresher
         {
             Th.ThrowIfTwoValuesWithNullableResult(value1, value2, ref result, ref length, value1Index, value2Index, resultIndex);
             fixed (Complex* value1Ptr = value1, value2Ptr = value2, resultPtr = result)
-                Multiply(value1Ptr, value2Ptr, resultPtr, length, value1Index, value2Index, resultIndex);
+                ComplexArrayHelper.Multiply(value1Ptr, value2Ptr, resultPtr, length, value1Index, value2Index, resultIndex);
         }
         /// <summary>
         /// Multiplies the elements of array <paramref name="value1"/> to the <paramref name="value2"/>
@@ -225,7 +227,7 @@ namespace AIlins.Thresher
         {
             Th.ThrowOneValueWithNullableResult(value1, ref result, ref length, value1Index, resultIndex);
             fixed (Complex* value1Ptr = value1, resultPtr = result)
-                Multiply(value1Ptr, value2, resultPtr, length, value1Index, resultIndex);
+                ComplexArrayHelper.Multiply(value1Ptr, value2, resultPtr, length, value1Index, resultIndex);
         }
         /// <summary>
         /// Division the elements of array <paramref name="value1"/> by elements of the array <paramref name="value2"/>
@@ -242,7 +244,7 @@ namespace AIlins.Thresher
         {
             Th.ThrowIfTwoValuesWithNullableResult(value1, value2, ref result, ref length, value1Index, value2Index, resultIndex);
             fixed (Complex* value1Ptr = value1, value2Ptr = value2, resultPtr = result)
-                Division(value1Ptr, value2Ptr, resultPtr, length, value1Index, value2Index, resultIndex);
+                ComplexArrayHelper.Division(value1Ptr, value2Ptr, resultPtr, length, value1Index, value2Index, resultIndex);
         }
         /// <summary>
         /// Invert the elements of array <paramref name="value"/>/>
@@ -257,7 +259,7 @@ namespace AIlins.Thresher
         {
             Th.ThrowOneValueWithNullableResult(value, ref result, ref length, valueIndex, resultIndex);
             fixed (Complex* valuePtr = value, resultPtr = result)
-                Inverse(valuePtr, resultPtr, length, valueIndex, resultIndex);
+                ComplexArrayHelper.Inverse(valuePtr, resultPtr, length, valueIndex, resultIndex);
         }
         /// <summary>
         /// Convert from <typeparamref name="K"/> array to <typeparamref name="T"/>
@@ -327,7 +329,7 @@ namespace AIlins.Thresher
         /// <param name="value2">The value which will be written</param>
         /// <param name="length">A 32-bit integer that represents the number of elements to write</param>
         /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value"/> array at which writing begins</param>
-        unsafe public override void Set(Complex[] value1, Complex value2 = default(Complex), int length = int.MaxValue, int value1Index = 0)
+        unsafe public override void Set(Complex[] value1, Complex value2 = default, int length = int.MaxValue, int value1Index = 0)
         {
             Th.ThrowIfOneValue(value1, ref length, value1Index);
             int end = value1Index + length;
@@ -348,7 +350,7 @@ namespace AIlins.Thresher
             Th.ThrowIfTwoValues(value1, value2, ref length, value1Index, value2Index);
             bool returnValue;
             fixed (Complex* value1Ptr = value1, value2Ptr = value2)
-                returnValue = Equal((double*)value1Ptr, (double*)value2Ptr, length * 2, value1Index * 2, value2Index * 2);
+                returnValue = DoubleArrayHelper.Equal((double*)value1Ptr, (double*)value2Ptr, length * 2, value1Index * 2, value2Index * 2);
             return returnValue;
         }
         #endregion Events, overrides

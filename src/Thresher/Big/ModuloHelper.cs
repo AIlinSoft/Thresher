@@ -374,7 +374,7 @@ namespace AIlins.Thresher
                     *ptrResult = (uint)temp;
                 }
                 BigHelper.Modulo(cache, modulo);
-                CommonOperations.FastCopy(cache, result, length);
+                ArrayCopyHelper.Copy(cache, result, length);
             }
         }
         /// <summary>
@@ -412,7 +412,7 @@ namespace AIlins.Thresher
                 }
                 *ptrResult = (uint)temp;
                 BigHelper.Modulo(cache, modulo);
-                CommonOperations.FastCopy(cache, result, length);
+                ArrayCopyHelper.Copy(cache, result, length);
             }
         }
         #endregion Multiply
@@ -493,8 +493,8 @@ namespace AIlins.Thresher
             uint[] v2 = cache5;
             uint[] v1 = cache6;
             int length = value.Length;
-            CommonOperations.FastCopy(modulo, a, length);
-            CommonOperations.FastCopy(value, b, length);
+            ArrayCopyHelper.Copy(modulo, a, length);
+            ArrayCopyHelper.Copy(value, b, length);
             v2[0] = 1;
             uint[] temp;
             // Пока целевое число не обнулилось
@@ -514,7 +514,7 @@ namespace AIlins.Thresher
                 v1 = v2;
                 v2 = temp;
             }
-            CommonOperations.FastCopy(v1, result, length);
+            ArrayCopyHelper.Copy(v1, result, length);
         }
         #endregion Inverse
         /// <summary>
@@ -550,7 +550,7 @@ namespace AIlins.Thresher
                 cache[indexShift] = (value[0] << valueShift);
             }
             BigHelper.Modulo(cache, modulo);
-            CommonOperations.FastCopy(cache, result, value.Length);
+            ArrayCopyHelper.Copy(cache, result, value.Length);
         }
         unsafe public static void RightShift(uint[] value, uint[] result, uint[] modulo, uint[] cache, int shiftValue)
         {
@@ -577,7 +577,7 @@ namespace AIlins.Thresher
                 cache[indexShift] = (value[0] << valueShift);
             }
             BigHelper.Modulo(cache, modulo);
-            CommonOperations.FastCopy(cache, result, value.Length);
+            ArrayCopyHelper.Copy(cache, result, value.Length);
         }
         /// <summary>
         /// Изменить знак числа по модулю
@@ -616,7 +616,7 @@ namespace AIlins.Thresher
             if (value2 == 0)
                 return new uint[] { 1 };
             uint[] returnValue = new uint[value1.Length];
-            CommonOperations.FastCopy(value1, returnValue, value1.Length);
+            ArrayCopyHelper.Copy(value1, returnValue, value1.Length);
             if (value2 < 0)
                 Invert(returnValue, modulo);
             value2 = Math.Abs(value2);

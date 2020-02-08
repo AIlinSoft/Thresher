@@ -234,7 +234,7 @@ namespace AIlins.Thresher
         public static IntBig Parse(uint[] value, bool littleEndian)
         {
             uint[] value1 = new uint[value.Length];
-            CommonOperations.FastCopy(value, value1, value.Length);
+            ArrayCopyHelper.Copy(value, value1, value.Length);
             return new IntBig(value1);
         }
         /// <summary>
@@ -460,7 +460,7 @@ namespace AIlins.Thresher
                 if (over > 0)
                 {
                     uint[] temp = new uint[newLength + 1];
-                    CommonOperations.FastCopy(cache, temp, newLength);
+                    ArrayCopyHelper.Copy(cache, temp, newLength);
                     temp[newLength] = over;
                     return new IntBig(temp, value1.Negative);
                 }
@@ -526,7 +526,7 @@ namespace AIlins.Thresher
                 if (over > 0)
                 {
                     uint[] temp = new uint[length + 1];
-                    CommonOperations.FastCopy(cache, temp, length);
+                    ArrayCopyHelper.Copy(cache, temp, length);
                     temp[length] = over;
                     return new IntBig(temp, true);
                 }
@@ -590,7 +590,7 @@ namespace AIlins.Thresher
                 if (over > 0)
                 {
                     uint[] temp = new uint[newLength + 1];
-                    CommonOperations.FastCopy(cache, temp, newLength);
+                    ArrayCopyHelper.Copy(cache, temp, newLength);
                     temp[newLength] = over;
                     return new IntBig(temp, value1.Negative);
                 }
@@ -661,7 +661,7 @@ namespace AIlins.Thresher
                 if (over > 0)
                 {
                     uint[] temp = new uint[length + 1];
-                    CommonOperations.FastCopy(cache, temp, length);
+                    ArrayCopyHelper.Copy(cache, temp, length);
                     temp[length] = over;
                     return new IntBig(temp);
                 }
@@ -732,7 +732,7 @@ namespace AIlins.Thresher
             if (value1.Zero)
                 return new IntBig(value1.m_Value);
             uint[] items = new uint[value1.m_Value.Length];
-            CommonOperations.FastCopy(value1.m_Value, items, items.Length);
+            ArrayCopyHelper.Copy(value1.m_Value, items, items.Length);
             BigHelper.Modulo(items, value2.m_Value);
             return new IntBig(items, value1.Negative ^ value2.Negative);
         }

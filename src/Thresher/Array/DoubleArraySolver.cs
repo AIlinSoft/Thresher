@@ -33,6 +33,8 @@ namespace AIlins.Thresher
         #region Classes, structures, enumerators
         #endregion Classes, structures, enumerators
         #region Constructors
+        public DoubleArraySolver()
+            : base(null){ }
         #endregion Constructors
         #region Variables
         #endregion Variables
@@ -114,7 +116,7 @@ namespace AIlins.Thresher
         {
             Th.ThrowIfTwoValuesWithNullableResult(value1, value2, ref result, ref length, value1Index, value2Index, resultIndex);
             fixed (double* value1Ptr = value1, value2Ptr = value2, resultPtr = result)
-                Addition((double*)value1Ptr, (double*)value2Ptr, (double*)resultPtr, length, value1Index, value2Index, resultIndex);
+                DoubleArrayHelper.Addition((double*)value1Ptr, (double*)value2Ptr, (double*)resultPtr, length, value1Index, value2Index, resultIndex);
         }
         /// <summary>
         /// Adds the number <paramref name="value2"/> and the elements of array <paramref name="value1"/>
@@ -131,7 +133,7 @@ namespace AIlins.Thresher
         {
             Th.ThrowOneValueWithNullableResult(value1, ref result, ref length, value1Index, resultIndex);
             fixed (double* value1Ptr = value1, resultPtr = result)
-                Addition((double*)value1Ptr, value2, (double*)resultPtr, length, value1Index, resultIndex);
+                DoubleArrayHelper.Addition((double*)value1Ptr, value2, (double*)resultPtr, length, value1Index, resultIndex);
         }
         /// <summary>
         /// Summarizes the elements of the array <paramref name="value"/>
@@ -145,7 +147,7 @@ namespace AIlins.Thresher
             Th.ThrowIfOneValue(value, ref length, valueIndex);
             double returnValue = 0;
             fixed (double* valuePtr = value)
-                returnValue = Summary(valuePtr, length, valueIndex);
+                returnValue = DoubleArrayHelper.Summary(valuePtr, length, valueIndex);
             return returnValue;
         }
         /// <summary>
@@ -163,7 +165,7 @@ namespace AIlins.Thresher
         {
             Th.ThrowIfTwoValuesWithNullableResult(value1, value2, ref result, ref length, value1Index, value2Index, resultIndex);
             fixed (double* value1Ptr = value1, value2Ptr = value2, resultPtr = result)
-                Substraction((double*)value1Ptr, (double*)value2Ptr, (double*)resultPtr, length, value1Index, value2Index, resultIndex);
+                DoubleArrayHelper.Substraction((double*)value1Ptr, (double*)value2Ptr, (double*)resultPtr, length, value1Index, value2Index, resultIndex);
         }
         /// <summary>
         /// Negates the elements of the array <paramref name="value"/>
@@ -178,7 +180,7 @@ namespace AIlins.Thresher
         {
             Th.ThrowOneValueWithNullableResult(value, ref result, ref length, valueIndex, resultIndex);
             fixed (double* valuePtr = value, resultPtr = result)
-                Negate(valuePtr, resultPtr, length, valueIndex, resultIndex);
+                DoubleArrayHelper.Negate(valuePtr, resultPtr, length, valueIndex, resultIndex);
         }
         /// <summary>
         /// Multiplies elements of two arrays
@@ -195,7 +197,7 @@ namespace AIlins.Thresher
         {
             Th.ThrowIfTwoValuesWithNullableResult(value1, value2, ref result, ref length, value1Index, value2Index, resultIndex);
             fixed (double* value1Ptr = value1, value2Ptr = value2, resultPtr = result)
-                Multiply(value1Ptr, value2Ptr, resultPtr, length, value1Index, value2Index, resultIndex);
+                DoubleArrayHelper.Multiply(value1Ptr, value2Ptr, resultPtr, length, value1Index, value2Index, resultIndex);
         }
         /// <summary>
         /// Multiplies the elements of array <paramref name="value1"/> to the <paramref name="value2"/>
@@ -211,7 +213,7 @@ namespace AIlins.Thresher
         {
             Th.ThrowOneValueWithNullableResult(value1, ref result, ref length, value1Index, resultIndex);
             fixed (double* value1Ptr = value1, resultPtr = result)
-                Multiply(value1Ptr, value2, resultPtr, length, value1Index, resultIndex);
+                DoubleArrayHelper.Multiply(value1Ptr, value2, resultPtr, length, value1Index, resultIndex);
         }
         /// <summary>
         /// Division the elements of array <paramref name="value1"/> by elements of the array <paramref name="value2"/>
@@ -228,7 +230,7 @@ namespace AIlins.Thresher
         {
             Th.ThrowIfTwoValuesWithNullableResult(value1, value2, ref result, ref length, value1Index, value2Index, resultIndex);
             fixed (double* value1Ptr = value1, value2Ptr = value2, resultPtr = result)
-                Division(value1Ptr, value2Ptr, resultPtr, length, value1Index, value2Index, resultIndex);
+                DoubleArrayHelper.Division(value1Ptr, value2Ptr, resultPtr, length, value1Index, value2Index, resultIndex);
         }
         /// <summary>
         /// Invert the elements of array <paramref name="value"/>/>
@@ -243,7 +245,7 @@ namespace AIlins.Thresher
         {
             Th.ThrowOneValueWithNullableResult(value, ref result, ref length, valueIndex, resultIndex);
             fixed (double* valuePtr = value, resultPtr = result)
-                Inverse(valuePtr, resultPtr, length, valueIndex, resultIndex);
+                DoubleArrayHelper.Inverse(valuePtr, resultPtr, length, valueIndex, resultIndex);
         }
         /// <summary>
         /// Convert from <typeparamref name="K"/> array to <typeparamref name="T"/>
@@ -325,7 +327,7 @@ namespace AIlins.Thresher
             Th.ThrowIfTwoValues(value1, value2, ref length, value1Index, value2Index);
             bool returnValue;
             fixed (double* value1Ptr = value1, value2Ptr = value2)
-                returnValue = Equal(value1Ptr, value2Ptr, length, value1Index, value2Index);
+                returnValue = DoubleArrayHelper.Equal(value1Ptr, value2Ptr, length, value1Index, value2Index);
             return returnValue;
         }
         #endregion Events, overrides

@@ -588,7 +588,7 @@ namespace AIlins.Thresher
         {
             uint[] result = new uint[value1.Length + value2.Length];
             Multiply(value1, value2, result);
-            CommonOperations.FastCopy(result, value1, value1.Length);
+            ArrayCopyHelper.Copy(result, value1, value1.Length);
             fixed (uint* resultPointer = result)
             {
                 uint* ptrResultEnd = resultPointer + result.Length;
@@ -787,10 +787,10 @@ namespace AIlins.Thresher
         public static void Divide(uint[] value1, uint[] value2, uint[] result1, uint[] result2)
         {
             uint[] cache = new uint[value1.Length];
-            CommonOperations.FastCopy(value1, result1, value1.Length);
+            ArrayCopyHelper.Copy(value1, result1, value1.Length);
             if (result1.Length > value1.Length)
                 Array.Clear(result1, value1.Length, result1.Length - value1.Length);
-            CommonOperations.FastCopy(value2, result2, value2.Length);
+            ArrayCopyHelper.Copy(value2, result2, value2.Length);
             if (result2.Length > value2.Length)
                 Array.Clear(result2, value2.Length, result2.Length - value2.Length);
             Divide(result1, result2, cache);
@@ -805,10 +805,10 @@ namespace AIlins.Thresher
         /// <param name="cache">Y cache, length = value1.length, must be clear</param>
         unsafe public static void Divide(uint[] value1, uint[] value2, uint[] result1, uint[] result2, uint[] cache)
         {
-            CommonOperations.FastCopy(value1, result1, value1.Length);
+            ArrayCopyHelper.Copy(value1, result1, value1.Length);
             if (result1.Length > value1.Length)
                 Array.Clear(result1, value1.Length, result1.Length - value1.Length);
-            CommonOperations.FastCopy(value2, result2, value2.Length);
+            ArrayCopyHelper.Copy(value2, result2, value2.Length);
             if (result2.Length > value2.Length)
                 Array.Clear(result2, value2.Length, result2.Length - value2.Length);
             Divide(result1, result2, cache);
@@ -841,7 +841,7 @@ namespace AIlins.Thresher
 
                 if (xLength < yLength)
                 {
-                    CommonOperations.FastCopy(value1, value2, xLength);
+                    ArrayCopyHelper.Copy(value1, value2, xLength);
                     Array.Clear(value2, xLength, yLength - xLength);
                     Array.Clear(value1, 0, xLength);
                     return;
@@ -850,7 +850,7 @@ namespace AIlins.Thresher
                 {
                     if (*xLast < *yLast)
                     {
-                        CommonOperations.FastCopy(value1, value2, xLength);
+                        ArrayCopyHelper.Copy(value1, value2, xLength);
                         Array.Clear(value1, 0, xLength);
                         return;
                     }
@@ -951,13 +951,13 @@ namespace AIlins.Thresher
                     }
                     *qPtr = (uint)tempResult;
                 }
-                CommonOperations.FastCopy(value1, value2, yLength);
-                CommonOperations.FastCopy(cache, value1, value1.Length);
+                ArrayCopyHelper.Copy(value1, value2, yLength);
+                ArrayCopyHelper.Copy(cache, value1, value1.Length);
             }
         }
         unsafe public static uint Divide(uint[] value1, uint value2, uint[] result1, uint[] cache)
         {
-            CommonOperations.FastCopy(value1, result1, value1.Length);
+            ArrayCopyHelper.Copy(value1, result1, value1.Length);
             if (result1.Length > value1.Length)
                 Array.Clear(result1, value1.Length, result1.Length - value1.Length);
             return Divide(result1, value2, cache);
@@ -1063,7 +1063,7 @@ namespace AIlins.Thresher
                 }
             }
             value2 = value1[0];
-            CommonOperations.FastCopy(cache, value1, value1.Length);
+            ArrayCopyHelper.Copy(cache, value1, value1.Length);
             return value2;
         }
         /// <summary>
@@ -1074,7 +1074,7 @@ namespace AIlins.Thresher
         /// <param name="result">The remainder that results from the division</param>
         unsafe public static void Modulo(uint[] value, uint[] modulo, uint[] result)
         {
-            CommonOperations.FastCopy(value, result, value.Length);
+            ArrayCopyHelper.Copy(value, result, value.Length);
             if (result.Length > value.Length)
                 Array.Clear(result, value.Length, result.Length - value.Length);
             Modulo(result, modulo);
@@ -1402,7 +1402,7 @@ namespace AIlins.Thresher
                 // Classic reduction
                 //...
             }
-            CommonOperations.FastCopy(q, result, result.Length);
+            ArrayCopyHelper.Copy(q, result, result.Length);
         }
         /// <summary>
         /// Get the Burrett constant value for reduction operations
@@ -1415,10 +1415,10 @@ namespace AIlins.Thresher
             uint[] temp = new uint[k + 1];
             temp[k] = 1;
             uint[] modulo1 = new uint[modulo.Length];
-            CommonOperations.FastCopy(modulo, modulo1, modulo.Length);
+            ArrayCopyHelper.Copy(modulo, modulo1, modulo.Length);
             uint[] cache = new uint[k + 1];
             Divide(temp, modulo1, cache);
-            CommonOperations.FastCopy(temp, result, result.Length);
+            ArrayCopyHelper.Copy(temp, result, result.Length);
         }
         #endregion Devide
         #region Negate
@@ -1626,7 +1626,7 @@ namespace AIlins.Thresher
             int count1 = degree * value.Length;
 
             uint[] returnValue = new uint[count1];
-            CommonOperations.FastCopy(value, returnValue, value.Length);
+            ArrayCopyHelper.Copy(value, returnValue, value.Length);
             for(int i = nonZeroLength - 2; i >= 0; --i)
             {
                 Multiply(returnValue, returnValue);
@@ -1662,7 +1662,7 @@ namespace AIlins.Thresher
             int count1 = degree * value1Temp.Length;
             
             uint[] returnValue = new uint[count1];
-            CommonOperations.FastCopy(value1Temp, returnValue, value1Temp.Length);
+            ArrayCopyHelper.Copy(value1Temp, returnValue, value1Temp.Length);
             for (int i = nonZeroLength - 2; i >= 0; --i)
             {
                 Multiply(returnValue, returnValue);
@@ -2344,7 +2344,7 @@ namespace AIlins.Thresher
             if (simbol != 'D' && simbol != 'N' && simbol != 'G')
                 return string.Empty;
             uint[] value1 = new uint[value.Length];
-            CommonOperations.FastCopy(value, value1, value.Length);
+            ArrayCopyHelper.Copy(value, value1, value.Length);
             StringBuilder returnValue = new StringBuilder();
             while (!IfZero(value1))
             {
@@ -2386,7 +2386,7 @@ namespace AIlins.Thresher
             if (simbol != 'E' && simbol != 'G')
                 return string.Empty;
             uint[] value1 = new uint[value.Length];
-            CommonOperations.FastCopy(value, value1, value.Length);
+            ArrayCopyHelper.Copy(value, value1, value.Length);
             StringBuilder returnValue = new StringBuilder();
             while (!IfZero(value1))
             {
@@ -2638,7 +2638,7 @@ namespace AIlins.Thresher
                 return null;
             uint[] returnValue = new uint[index + 1];
             // Set output
-            CommonOperations.FastCopy(value, returnValue, returnValue.Length);
+            ArrayCopyHelper.Copy(value, returnValue, returnValue.Length);
             // Check for little endian output
             if (littleEndian)
             {
@@ -2719,7 +2719,7 @@ namespace AIlins.Thresher
                 if (value[i] != 0)
                 {
                     uint[] returnValue = new uint[i + 1];
-                    CommonOperations.FastCopy(value, returnValue, returnValue.Length);
+                    ArrayCopyHelper.Copy(value, returnValue, returnValue.Length);
                     return returnValue;
                 }
             return null;

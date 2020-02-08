@@ -21,7 +21,7 @@ using System.Text;
 
 namespace AIlins.Thresher
 {
-    public class CommonOperations
+    public class ArrayCopyHelper
     {
         /// <summary>
         /// Fast copies a range of elements from an uint array starting at the first element and pastes them into another uint array starting at the first element.
@@ -32,7 +32,7 @@ namespace AIlins.Thresher
         /// <param name="source">The uint array that contains the data to copy</param>
         /// <param name="dest">The uint array that receives the data</param>
         /// <param name="length">A 32-bit integer that represents the number of uint elements to copy</param>
-        unsafe public static void FastCopy(uint[] source, uint[] dest, int length)
+        unsafe public static void Copy(uint[] source, uint[] dest, int length)
         {
             if (length <= 0)
                 return;
@@ -141,7 +141,7 @@ namespace AIlins.Thresher
             }
         }
 
-        unsafe public static void FastCopy(uint* source, uint* dest, int length)
+        unsafe public static void Copy(uint* source, uint* dest, int length)
         {
             ulong* sourcePtr = (ulong*)(void*)source;
             ulong* sourcePtrEnd = (ulong*)(void*)source + (length >> 1) - 31;
@@ -254,7 +254,7 @@ namespace AIlins.Thresher
         /// <param name="source">The uint array that contains the data to copy</param>
         /// <param name="dest">The uint array that receives the data</param>
         /// <param name="length">A 32-bit integer that represents the number of uint elements to copy</param>
-        unsafe public static void FastCopy(int[] source, int[] dest, int length)
+        unsafe public static void Copy(int[] source, int[] dest, int length)
         {
             fixed (int* sourcePointer = source, destPointer = dest)
             {
@@ -369,7 +369,7 @@ namespace AIlins.Thresher
         /// <param name="source">The double array that contains the data to copy</param>
         /// <param name="dest">The double array that receives the data</param>
         /// <param name="length">A 32-bit integer that represents the number of uint elements to copy</param>
-        unsafe public static void FastCopy(double[] source, double[] dest, int length)
+        unsafe public static void Copy(double[] source, double[] dest, int length)
         {
             fixed (double* sourcePointer = source, destPointer = dest)
             {

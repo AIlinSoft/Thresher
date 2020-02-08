@@ -1556,7 +1556,7 @@ namespace AIlins.Thresher
                 if (m2 != m1)
                     throw new Exception("Rows count of first matrix not equal to rows count of second matrix!");
 
-                CommonOperations.FastCopy(value1, result, value1.Length);
+                ArrayCopyHelper.Copy(value1, result, value1.Length);
 
                 fixed (double* valueArray1Pointer = result)
                 {
@@ -1593,7 +1593,7 @@ namespace AIlins.Thresher
             }
             if (m2 == m1 && n2 == n1)
             {
-                CommonOperations.FastCopy(value1, result, value1.Length);
+                ArrayCopyHelper.Copy(value1, result, value1.Length);
 
                 fixed (double* valueArray1Pointer = result, valueArray2Pointer = value2)
                 {
@@ -2666,7 +2666,7 @@ namespace AIlins.Thresher
             double[] diagonal = new double[n];
             int length = m * n;
             double[] valueTemp = new double[length];
-            CommonOperations.FastCopy(value.m_Values, valueTemp, length);
+            ArrayCopyHelper.Copy(value.m_Values, valueTemp, length);
             QrDecomposition(m, n, valueTemp, diagonal);
 
             FullMatrix<double> result = new FullMatrix<double>();
@@ -2691,7 +2691,7 @@ namespace AIlins.Thresher
             double[] diagonal = new double[n2];
             int length = m2 * n2;
             double[] valueTemp = new double[length];
-            CommonOperations.FastCopy(value2, valueTemp, length);
+            ArrayCopyHelper.Copy(value2, valueTemp, length);
             QrDecomposition(m2, n2, valueTemp, diagonal);
             QrSolve(m2, n2, valueTemp, m1, n1, value1, diagonal, result);
         }
@@ -3060,7 +3060,7 @@ namespace AIlins.Thresher
             if (result == value)
             {
                 value = new double[size];
-                CommonOperations.FastCopy(result, value, size);
+                ArrayCopyHelper.Copy(result, value, size);
             }
 
             fixed (double* valuePointer = value, resultPointer = result)

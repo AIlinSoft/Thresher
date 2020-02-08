@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Numerics;
-using Th = AIlins.Thresher.ThrowHelper<AIlins.Thresher.Block2x2>;
 #endregion Using namespaces
 #region Working namespace
 namespace AIlins.Thresher
@@ -28,20 +27,239 @@ namespace AIlins.Thresher
     /// <summary>
     /// Array group operations optimized helper
     /// </summary>
-    public class Block2x2ArraySolver : ArraySolver<Block2x2>
+    public class ArraySolver<T>
     {
         #region Classes, structures, enumerators
         #endregion Classes, structures, enumerators
         #region Constructors
-        public Block2x2ArraySolver()
-            : base(null) { }
+        /// <summary>
+        /// Constructor for array solver
+        /// </summary>
+        /// <param name="solver">Solver for generic element</param>
+        public ArraySolver(Solver<T> solver)
+        {
+            m_Solver = solver;
+        }
         #endregion Constructors
         #region Variables
+        private Solver<T> m_Solver;
         #endregion Variables
         #region Fields
         #endregion Fields
         #region Methods
         #region Public methods
+        /// <summary>
+        /// Addition of two arrays
+        /// </summary>
+        /// <param name="value1">The first array to addition</param>
+        /// <param name="value2">The second value to addition</param>
+        /// <param name="result">The result of arrays addition</param>
+        /// <param name="length">A 32-bit integer that represents the number of elements to addition</param>
+        /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value1"/> array at which addition begins</param>
+        /// <param name="value2Index">A 32-bit integer that represents the index in the <paramref name="value2"/> array at which addition begins</param>
+        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which copying result begins</param>
+        /// <remarks>If the <paramref name="result"/> array is null, operation result copying to the <paramref name="value1"/></remarks>
+        public virtual void Addition(T[] value1, T[] value2, T[] result = null, int length = int.MaxValue, int value1Index = 0, int value2Index = 0, int resultIndex = 0)
+        {
+            ThrowHelper<T>.ThrowIfNullSolver(m_Solver);
+            ThrowHelper<T>.ThrowIfTwoValuesWithNullableResult(value1, value2, ref result, ref length, value1Index, value2Index, resultIndex);
+            int value1End = value1Index + length;
+            for (; value1Index < value1End; ++value1Index, ++value2Index, ++resultIndex)
+                result[resultIndex] = m_Solver.Addition(value1[value1Index], value2[value2Index]);
+        }
+        /// <summary>
+        /// Adds the number <paramref name="value2"/> and the elements of array <paramref name="value1"/>
+        /// </summary>
+        /// <param name="value1">The array to addition</param>
+        /// <param name="value2">The number, which will be addition with <paramref name="value1"/> array</param>
+        /// <param name="result">The result of addition</param>
+        /// <param name="length">A 32-bit integer that represents the number of elements to addition</param>
+        /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value1"/> array at which addition begins</param>
+        /// <param name="value2Index">A 32-bit integer that represents the index in the <paramref name="value2"/> array at which addition begins</param>
+        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which copying result begins</param>
+        /// <remarks>If the <paramref name="result"/> array is null, operation result copying to the <paramref name="value1"/></remarks>
+        public virtual void Addition(T[] value1, T value2, T[] result = null, int length = int.MaxValue, int value1Index = 0, int resultIndex = 0)
+        {
+            ThrowHelper<T>.ThrowIfNullSolver(m_Solver);
+            ThrowHelper<T>.ThrowOneValueWithNullableResult(value1, ref result, ref length, value1Index, resultIndex);
+            int value1End = value1Index + length;
+            for (; value1Index < value1End; ++value1Index, ++resultIndex)
+                result[resultIndex] = m_Solver.Addition(value1[value1Index], value2);
+        }
+        /// <summary>
+        /// Summarizes the elements of the array <paramref name="value"/>
+        /// </summary>
+        /// <param name="value">The array to summariez</param>
+        /// <param name="length">A 32-bit integer that represents the number of elements to summariez</param>
+        /// <param name="valueIndex">A 32-bit integer that represents the index in the <paramref name="value"/> array at which summariez begins</param>
+        /// <returns>Result of the elements summariez</returns>
+        public virtual T Summary(T[] value, int length = int.MaxValue, int valueIndex = 0)
+        {
+            ThrowHelper<T>.ThrowIfNullSolver(m_Solver);
+            ThrowHelper<T>.ThrowIfOneValue(value, ref length, valueIndex);
+            int valueEnd = valueIndex + length;
+            T returnValue = default(T);
+            for (; valueIndex < valueEnd; ++valueIndex)
+                returnValue = m_Solver.Addition(returnValue, value[valueIndex]);
+            return returnValue;
+        }
+        /// <summary>
+        /// Substraction second array from first
+        /// </summary>
+        /// <param name="value1">The minuend array</param>
+        /// <param name="value2">The subtrahend array</param>
+        /// <param name="result">The difference of arrays substraction</param>
+        /// <param name="length">A 32-bit integer that represents the number of elements to substraction</param>
+        /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value1"/> array at which substraction begins</param>
+        /// <param name="value2Index">A 32-bit integer that represents the index in the <paramref name="value2"/> array at which substraction begins</param>
+        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which copying result begins</param>
+        /// <remarks>If the <paramref name="result"/> array is null, operation result copying to the <paramref name="value1"/></remarks>
+        public virtual void Substraction(T[] value1, T[] value2, T[] result = null, int length = int.MaxValue, int value1Index = 0, int value2Index = 0, int resultIndex = 0)
+        {
+            ThrowHelper<T>.ThrowIfNullSolver(m_Solver);
+            ThrowHelper<T>.ThrowIfTwoValuesWithNullableResult(value1, value2, ref result, ref length, value1Index, value2Index, resultIndex);
+            int value1End = value1Index + length;
+            for (; value1Index < value1End; ++value1Index, ++value2Index, ++resultIndex)
+                result[resultIndex] = m_Solver.Substraction(value1[value1Index], value2[value2Index]);
+        }
+        /// <summary>
+        /// Negates the elements of the array <paramref name="value"/>
+        /// </summary>
+        /// <param name="value">The array to negates</param>
+        /// <param name="result">The result of negates</param>
+        /// <param name="length">A 32-bit integer that represents the number of elements to negates</param>
+        /// <param name="valueIndex">A 32-bit integer that represents the index in the <paramref name="value"/> array at which negates begins</param>
+        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which copying result begins</param>
+        /// <remarks>If the <paramref name="result"/> array is null, operation result copying to the <paramref name="value1"/></remarks>
+        public virtual void Negation(T[] value, T[] result = null, int length = int.MaxValue, int valueIndex = 0, int resultIndex = 0)
+        {
+            ThrowHelper<T>.ThrowIfNullSolver(m_Solver);
+            ThrowHelper<T>.ThrowOneValueWithNullableResult(value, ref result, ref length, valueIndex, resultIndex);
+            int valueEnd = valueIndex + length;
+            for (; valueIndex < valueEnd; ++valueIndex, ++resultIndex)
+                result[resultIndex] = m_Solver.Negation(value[valueIndex]);
+        }
+        /// <summary>
+        /// Multiplies elements of two arrays
+        /// </summary>
+        /// <param name="value1">The first array to multiply</param>
+        /// <param name="value2">The second value to multiply</param>
+        /// <param name="result">The result of arrays multiply</param>
+        /// <param name="length">A 32-bit integer that represents the number of elements to multiply</param>
+        /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value1"/> array at which multiply begins</param>
+        /// <param name="value2Index">A 32-bit integer that represents the index in the <paramref name="value2"/> array at which multiply begins</param>
+        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which copying result begins</param>
+        /// <remarks>If the <paramref name="result"/> array is null, operation result copying to the <paramref name="value1"/></remarks>
+        public virtual void Multiply(T[] value1, T[] value2, T[] result = null, int length = int.MaxValue, int value1Index = 0, int value2Index = 0, int resultIndex = 0)
+        {
+            ThrowHelper<T>.ThrowIfNullSolver(m_Solver);
+            ThrowHelper<T>.ThrowIfTwoValuesWithNullableResult(value1, value2, ref result, ref length, value1Index, value2Index, resultIndex);
+            int value1End = value1Index + length;
+            for (; value1Index < value1End; ++value1Index, ++value2Index, ++resultIndex)
+                result[resultIndex] = m_Solver.Multiply(value1[value1Index], value2[value2Index]);
+        }
+        /// <summary>
+        /// Multiplies the elements of array <paramref name="value1"/> to the <paramref name="value2"/>
+        /// </summary>
+        /// <param name="value1">The array to multiply</param>
+        /// <param name="value2">The number, which will be multiply to the <paramref name="value1"/> array</param>
+        /// <param name="result">The result of multiply</param>
+        /// <param name="length">A 32-bit integer that represents the number of elements to multiply</param>
+        /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value1"/> array at which multiply begins</param>
+        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which copying result begins</param>
+        /// <remarks>If the <paramref name="result"/> array is null, operation result copying to the <paramref name="value1"/></remarks>
+        public virtual void Multiply(T[] value1, T value2, T[] result = null, int length = int.MaxValue, int value1Index = 0, int resultIndex = 0)
+        {
+            ThrowHelper<T>.ThrowIfNullSolver(m_Solver);
+            ThrowHelper<T>.ThrowOneValueWithNullableResult(value1, ref result, ref length, value1Index, resultIndex);
+            int value1End = value1Index + length;
+            for (; value1Index < value1End; ++value1Index, ++resultIndex)
+                result[resultIndex] = m_Solver.Multiply(value1[value1Index], value2);
+        }
+        /// <summary>
+        /// Division the elements of array <paramref name="value1"/> by elements of the array <paramref name="value2"/>
+        /// </summary>
+        /// <param name="value1">The dividend array</param>
+        /// <param name="value2">The divisor array</param>
+        /// <param name="result">The result of division</param>
+        /// <param name="length">A 32-bit integer that represents the number of elements to division</param>
+        /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value1"/> array at which division begins</param>
+        /// <param name="value2Index">A 32-bit integer that represents the index in the <paramref name="value2"/> array at which division begins</param>
+        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which copying result begins</param>
+        /// <remarks>If the <paramref name="result"/> array is null, operation result copying to the <paramref name="value1"/></remarks>
+        public virtual void Division(T[] value1, T[] value2, T[] result = null, int length = int.MaxValue, int value1Index = 0, int value2Index = 0, int resultIndex = 0)
+        {
+            ThrowHelper<T>.ThrowIfNullSolver(m_Solver);
+            ThrowHelper<T>.ThrowIfTwoValuesWithNullableResult(value1, value2, ref result, ref length, value1Index, value2Index, resultIndex);
+            int value1End = value1Index + length;
+            for (; value1Index < value1End; ++value1Index, ++value2Index, ++resultIndex)
+                result[resultIndex] = m_Solver.Division(value1[value1Index], value2[value2Index]);
+        }
+        /// <summary>
+        /// Invert the elements of array <paramref name="value"/>/>
+        /// </summary>
+        /// <param name="value">The array will be invert</param>
+        /// <param name="result">The result of inverting</param>
+        /// <param name="length">A 32-bit integer that represents the number of elements to invert</param>
+        /// <param name="valueIndex">A 32-bit integer that represents the index in the <paramref name="value"/> array at which inverting begins</param>
+        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which copying result begins</param>
+        /// <remarks>If the <paramref name="result"/> array is null, operation result copying to the <paramref name="value1"/></remarks>
+        public virtual void Inversion(T[] value, T[] result = null, int length = int.MaxValue, int valueIndex = 0, int resultIndex = 0)
+        {
+            ThrowHelper<T>.ThrowIfNullSolver(m_Solver);
+            ThrowHelper<T>.ThrowOneValueWithNullableResult(value, ref result, ref length, valueIndex, resultIndex);
+            int valueEnd = valueIndex + length;
+            for (; valueIndex < valueEnd; ++valueIndex, ++resultIndex)
+                result[resultIndex] = m_Solver.Inversion(value[valueIndex]);
+        }
+        /// <summary>
+        /// Convert from <typeparamref name="K"/> array to <typeparamref name="T"/>
+        /// </summary>
+        /// <param name="value">The value will be convert</param>
+        /// <param name="result">The result of arrays conversion</param>
+        /// <param name="length">A 32-bit integer that represents the number of elements to conversion</param>
+        /// <param name="valueIndex">A 32-bit integer that represents the index in the <paramref name="value"/> array at which conversion begins</param>
+        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which conversion begins</param>
+        public virtual void From<K>(K[] value, T[] result, int length = int.MaxValue, int valueIndex = 0, int resultIndex = 0)
+        {
+            ThrowHelper<T>.ThrowIfNullSolver(m_Solver);
+            ThrowHelper<T>.ThrowOneValueWithoutNullableResult<K>(value, result, ref length, valueIndex, resultIndex);
+            int valueEnd = valueIndex + length;
+            for (; valueIndex < valueEnd; ++valueIndex, ++resultIndex)
+                result[resultIndex] = m_Solver.From<K>(value[valueIndex]);
+        }
+        /// <summary>
+        /// Write the <paramref name="value2"/> to the elements of array <paramref name="value"/>/>
+        /// </summary>
+        /// <param name="value1">The array in which value will be written</param>
+        /// <param name="value2">The value which will be written</param>
+        /// <param name="length">A 32-bit integer that represents the number of elements to write</param>
+        /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value"/> array at which writing begins</param>
+        public virtual void Set(T[] value1, T value2 = default(T), int length = int.MaxValue, int value1Index = 0)
+        {
+            ThrowHelper<T>.ThrowIfOneValue(value1, ref length, value1Index);
+            int value1End = value1Index + length;
+            for (; value1Index < value1End; ++value1Index)
+                value1[value1Index] = value2;
+        }
+        /// <summary>
+        /// Comparison of two arrays
+        /// </summary>
+        /// <param name="value1">The first array to comparison</param>
+        /// <param name="value2">The second array to comparison</param>
+        /// <param name="length">A 32-bit integer that represents the number of elements to comparison</param>
+        /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value1"/> array at which comparison begins</param>
+        /// <param name="value2Index">A 32-bit integer that represents the index in the <paramref name="value2"/> array at which comparison begins</param>
+        public virtual bool Equality(T[] value1, T[] value2, int length = int.MaxValue, int value1Index = 0, int value2Index = 0)
+        {
+            ThrowHelper<T>.ThrowIfNullSolver(m_Solver);
+            ThrowHelper<T>.ThrowIfTwoValues(value1, value2, ref length, value1Index, value2Index);
+            int value1End = value1Index + length;
+            for (; value1Index < value1End; ++value1Index, ++value2Index)
+                if(!m_Solver.Equality(value1[value1Index], value2[value2Index]))
+                    return false;
+            return true;
+        }
         #endregion Public methods
         #region Internal methods
         #endregion Internal methods
@@ -101,252 +319,6 @@ namespace AIlins.Thresher
         }
         #endregion Private methods
         #region Events, overrides
-        /// <summary>
-        /// Addition of two arrays
-        /// </summary>
-        /// <param name="value1">The first array to addition</param>
-        /// <param name="value2">The second value to addition</param>
-        /// <param name="result">The result of arrays addition</param>
-        /// <param name="length">A 32-bit integer that represents the number of elements to addition</param>
-        /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value1"/> array at which addition begins</param>
-        /// <param name="value2Index">A 32-bit integer that represents the index in the <paramref name="value2"/> array at which addition begins</param>
-        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which copying result begins</param>
-        /// <remarks>If the <paramref name="result"/> array is null, operation result copying to the <paramref name="value1"/></remarks>
-        unsafe public override void Addition(Block2x2[] value1, Block2x2[] value2, Block2x2[] result = null, int length = int.MaxValue, int value1Index = 0, int value2Index = 0, int resultIndex = 0)
-        {
-            Th.ThrowIfTwoValuesWithNullableResult(value1, value2, ref result, ref length, value1Index, value2Index, resultIndex);
-            fixed (Block2x2* value1Ptr = value1, value2Ptr = value2, resultPtr = result)
-                DoubleArrayHelper.Addition((double*)value1Ptr, (double*)value2Ptr, (double*)resultPtr, length * 4, value1Index * 4, value2Index * 4, resultIndex * 4);
-        }
-        /// <summary>
-        /// Adds the number <paramref name="value2"/> and the elements of array <paramref name="value1"/>
-        /// </summary>
-        /// <param name="value1">The array to addition</param>
-        /// <param name="value2">The number, which will be addition with <paramref name="value1"/> array</param>
-        /// <param name="result">The result of addition</param>
-        /// <param name="length">A 32-bit integer that represents the number of elements to addition</param>
-        /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value1"/> array at which addition begins</param>
-        /// <param name="value2Index">A 32-bit integer that represents the index in the <paramref name="value2"/> array at which addition begins</param>
-        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which copying result begins</param>
-        /// <remarks>If the <paramref name="result"/> array is null, operation result copying to the <paramref name="value1"/></remarks>
-        unsafe public override void Addition(Block2x2[] value1, Block2x2 value2, Block2x2[] result = null, int length = int.MaxValue, int value1Index = 0, int resultIndex = 0)
-        {
-            Th.ThrowOneValueWithNullableResult(value1, ref result, ref length, value1Index, resultIndex);
-            fixed (Block2x2* value1Ptr = value1, resultPtr = result)
-                DoubleArrayHelper.Addition((double*)value1Ptr, value2.f00, value2.f01, value2.f10, value2.f11, (double*)resultPtr, length * 4, value1Index * 4, resultIndex * 4);
-        }
-        /// <summary>
-        /// Summarizes the elements of the array <paramref name="value"/>
-        /// </summary>
-        /// <param name="value">The array to summariez</param>
-        /// <param name="length">A 32-bit integer that represents the number of elements to summariez</param>
-        /// <param name="valueIndex">A 32-bit integer that represents the index in the <paramref name="value"/> array at which summariez begins</param>
-        /// <returns>Result of the elements summariez</returns>
-        unsafe public override Block2x2 Summary(Block2x2[] value, int length = int.MaxValue, int valueIndex = 0)
-        {
-            Th.ThrowIfOneValue(value, ref length, valueIndex);
-            Block2x2 returnValue = 0;
-            fixed (Block2x2* valuePtr = value)
-                returnValue = Block2x2ArrayHelper.Summary(valuePtr, length, valueIndex);
-            return returnValue;
-        }
-        /// <summary>
-        /// Substraction second array from first
-        /// </summary>
-        /// <param name="value1">The minuend array</param>
-        /// <param name="value2">The subtrahend array</param>
-        /// <param name="result">The difference of arrays substraction</param>
-        /// <param name="length">A 32-bit integer that represents the number of elements to substraction</param>
-        /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value1"/> array at which substraction begins</param>
-        /// <param name="value2Index">A 32-bit integer that represents the index in the <paramref name="value2"/> array at which substraction begins</param>
-        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which copying result begins</param>
-        /// <remarks>If the <paramref name="result"/> array is null, operation result copying to the <paramref name="value1"/></remarks>
-        unsafe public override void Substraction(Block2x2[] value1, Block2x2[] value2, Block2x2[] result = null, int length = int.MaxValue, int value1Index = 0, int value2Index = 0, int resultIndex = 0)
-        {
-            Th.ThrowIfTwoValuesWithNullableResult(value1, value2, ref result, ref length, value1Index, value2Index, resultIndex);
-            fixed (Block2x2* value1Ptr = value1, value2Ptr = value2, resultPtr = result)
-                DoubleArrayHelper.Substraction((double*)value1Ptr, (double*)value2Ptr, (double*)resultPtr, length * 4, value1Index * 4, value2Index * 4, resultIndex * 4);
-        }
-        /// <summary>
-        /// Negates the elements of the array <paramref name="value"/>
-        /// </summary>
-        /// <param name="value">The array to negates</param>
-        /// <param name="result">The result of negates</param>
-        /// <param name="length">A 32-bit integer that represents the number of elements to negates</param>
-        /// <param name="valueIndex">A 32-bit integer that represents the index in the <paramref name="value"/> array at which negates begins</param>
-        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which copying result begins</param>
-        /// <remarks>If the <paramref name="result"/> array is null, operation result copying to the <paramref name="value1"/></remarks>
-        unsafe public override void Negation(Block2x2[] value, Block2x2[] result = null, int length = int.MaxValue, int valueIndex = 0, int resultIndex = 0)
-        {
-            Th.ThrowOneValueWithNullableResult(value, ref result, ref length, valueIndex, resultIndex);
-            fixed (Block2x2* valuePtr = value, resultPtr = result)
-                DoubleArrayHelper.Negate((double*)valuePtr, (double*)resultPtr, length * 4, valueIndex * 4, resultIndex * 4);
-        }
-        /// <summary>
-        /// Multiplies elements of two arrays
-        /// </summary>
-        /// <param name="value1">The first array to multiply</param>
-        /// <param name="value2">The second value to multiply</param>
-        /// <param name="result">The result of arrays multiply</param>
-        /// <param name="length">A 32-bit integer that represents the number of elements to multiply</param>
-        /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value1"/> array at which multiply begins</param>
-        /// <param name="value2Index">A 32-bit integer that represents the index in the <paramref name="value2"/> array at which multiply begins</param>
-        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which copying result begins</param>
-        /// <remarks>If the <paramref name="result"/> array is null, operation result copying to the <paramref name="value1"/></remarks>
-        unsafe public override void Multiply(Block2x2[] value1, Block2x2[] value2, Block2x2[] result = null, int length = int.MaxValue, int value1Index = 0, int value2Index = 0, int resultIndex = 0)
-        {
-            Th.ThrowIfTwoValuesWithNullableResult(value1, value2, ref result, ref length, value1Index, value2Index, resultIndex);
-            fixed (Block2x2* value1Ptr = value1, value2Ptr = value2, resultPtr = result)
-                Block2x2ArrayHelper.Multiply(value1Ptr, value2Ptr, resultPtr, length, value1Index, value2Index, resultIndex);
-        }
-        /// <summary>
-        /// Multiplies the elements of array <paramref name="value1"/> to the <paramref name="value2"/>
-        /// </summary>
-        /// <param name="value1">The array to multiply</param>
-        /// <param name="value2">The number, which will be multiply to the <paramref name="value1"/> array</param>
-        /// <param name="result">The result of multiply</param>
-        /// <param name="length">A 32-bit integer that represents the number of elements to multiply</param>
-        /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value1"/> array at which multiply begins</param>
-        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which copying result begins</param>
-        /// <remarks>If the <paramref name="result"/> array is null, operation result copying to the <paramref name="value1"/></remarks>
-        unsafe public override void Multiply(Block2x2[] value1, Block2x2 value2, Block2x2[] result = null, int length = int.MaxValue, int value1Index = 0, int resultIndex = 0)
-        {
-            Th.ThrowOneValueWithNullableResult(value1, ref result, ref length, value1Index, resultIndex);
-            fixed (Block2x2* value1Ptr = value1, resultPtr = result)
-                Block2x2ArrayHelper.Multiply(value1Ptr, value2, resultPtr, length, value1Index, resultIndex);
-        }
-        /// <summary>
-        /// Division the elements of array <paramref name="value1"/> by elements of the array <paramref name="value2"/>
-        /// </summary>
-        /// <param name="value1">The dividend array</param>
-        /// <param name="value2">The divisor array</param>
-        /// <param name="result">The result of division</param>
-        /// <param name="length">A 32-bit integer that represents the number of elements to division</param>
-        /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value1"/> array at which division begins</param>
-        /// <param name="value2Index">A 32-bit integer that represents the index in the <paramref name="value2"/> array at which division begins</param>
-        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which copying result begins</param>
-        /// <remarks>If the <paramref name="result"/> array is null, operation result copying to the <paramref name="value1"/></remarks>
-        unsafe public override void Division(Block2x2[] value1, Block2x2[] value2, Block2x2[] result = null, int length = int.MaxValue, int value1Index = 0, int value2Index = 0, int resultIndex = 0)
-        {
-            Th.ThrowIfTwoValuesWithNullableResult(value1, value2, ref result, ref length, value1Index, value2Index, resultIndex);
-            fixed (Block2x2* value1Ptr = value1, value2Ptr = value2, resultPtr = result)
-                Block2x2ArrayHelper.Division(value1Ptr, value2Ptr, resultPtr, length, value1Index, value2Index, resultIndex);
-        }
-        /// <summary>
-        /// Invert the elements of array <paramref name="value"/>/>
-        /// </summary>
-        /// <param name="value">The array will be invert</param>
-        /// <param name="result">The result of inverting</param>
-        /// <param name="length">A 32-bit integer that represents the number of elements to invert</param>
-        /// <param name="valueIndex">A 32-bit integer that represents the index in the <paramref name="value"/> array at which inverting begins</param>
-        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which copying result begins</param>
-        /// <remarks>If the <paramref name="result"/> array is null, operation result copying to the <paramref name="value1"/></remarks>
-        unsafe public override void Inversion(Block2x2[] value, Block2x2[] result = null, int length = int.MaxValue, int valueIndex = 0, int resultIndex = 0)
-        {
-            Th.ThrowOneValueWithNullableResult(value, ref result, ref length, valueIndex, resultIndex);
-            fixed (Block2x2* valuePtr = value, resultPtr = result)
-                Block2x2ArrayHelper.Inverse(valuePtr, resultPtr, length, valueIndex, resultIndex);
-        }
-        /// <summary>
-        /// Convert from <typeparamref name="K"/> array to <typeparamref name="T"/>
-        /// </summary>
-        /// <param name="value">The value will be convert</param>
-        /// <param name="result">The result of arrays conversion</param>
-        /// <param name="length">A 32-bit integer that represents the number of elements to conversion</param>
-        /// <param name="valueIndex">A 32-bit integer that represents the index in the <paramref name="value"/> array at which conversion begins</param>
-        /// <param name="resultIndex">A 32-bit integer that represents the index in the <paramref name="result"/> array at which conversion begins</param>
-        unsafe public override void From<K>(K[] value, Block2x2[] result, int length = int.MaxValue, int valueIndex = 0, int resultIndex = 0)
-        {
-            Th.ThrowOneValueWithoutNullableResult<K>(value, result, ref length, valueIndex, resultIndex);
-            if (typeof(K) == typeof(double))
-            {
-                double[] doubleValue = value as double[];
-                fixed (double* valuePtr = doubleValue)
-                fixed (Block2x2* resultPtr = result)
-                {
-                    double* valuePtr1 = valuePtr + valueIndex;
-                    double* resultPtr1 = (double*)(resultPtr + resultIndex);
-                    length *= 4;
-                    for (int i = 0, j = 0; i < length; i += 4, ++j)
-                    {
-                        resultPtr1[i] = resultPtr1[i + 3] = valuePtr1[j];
-                        resultPtr1[i + 1] = resultPtr1[i + 2] = 0;
-                    }
-                }
-            }
-            else
-                if (typeof(K) == typeof(Complex))
-                {
-                    Complex[] complexValue = value as Complex[];
-                    fixed (Complex* valuePtr = complexValue)
-                    fixed (Block2x2* resultPtr = result)
-                    {
-                        double* valuePtr1 = (double*)(valuePtr + valueIndex);
-                        double* resultPtr1 = (double*)(resultPtr + resultIndex);
-                        length *= 4;
-                        double temp;
-                        for (int i = 0, j = 0; i < length; i += 4, j += 2)
-                        {
-                            resultPtr1[i + 3] = resultPtr1[i] = valuePtr1[j];
-                            temp = valuePtr1[j + 1];
-                            resultPtr1[i + 1] = -temp;
-                            resultPtr1[i + 2] = temp;
-                        }
-                    }
-                }
-                else
-                    if (typeof(K) == typeof(Block2x2))
-                    {
-                        Block2x2[] block2x2Value = value as Block2x2[];
-                        fixed (Block2x2* valuePtr = block2x2Value)
-                        fixed (Block2x2* resultPtr = result)
-                        {
-                            double* valuePtr1 = (double*)(valuePtr + valueIndex);
-                            double* resultPtr1 = (double*)(resultPtr + resultIndex);
-                            length *= 4;
-                            for (int i = 0; i < length; i += 4)
-                            {
-                                resultPtr1[i] = valuePtr1[i];
-                                resultPtr1[i + 1] = valuePtr1[i + 1];
-                                resultPtr1[i + 2] = valuePtr1[i + 2];
-                                resultPtr1[i + 3] = valuePtr1[i + 3];
-                            }
-                        }
-                    }
-                    else
-                        base.From<K>(value, result, length, valueIndex, resultIndex);
-        }
-        /// <summary>
-        /// Write the <paramref name="value2"/> to the elements of array <paramref name="value"/>/>
-        /// </summary>
-        /// <param name="value1">The array in which value will be written</param>
-        /// <param name="value2">The value which will be written</param>
-        /// <param name="length">A 32-bit integer that represents the number of elements to write</param>
-        /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value"/> array at which writing begins</param>
-        unsafe public override void Set(Block2x2[] value1, Block2x2 value2 = default, int length = int.MaxValue, int value1Index = 0)
-        {
-            Th.ThrowIfOneValue(value1, ref length, value1Index);
-            int end = value1Index + length;
-            fixed (Block2x2* valuePtr = value1)
-                for (; value1Index < end; ++value1Index)
-                    valuePtr[value1Index] = value2;
-        }
-        /// <summary>
-        /// Comparison of two arrays
-        /// </summary>
-        /// <param name="value1">The first array to comparison</param>
-        /// <param name="value2">The second array to comparison</param>
-        /// <param name="length">A 32-bit integer that represents the number of elements to comparison</param>
-        /// <param name="value1Index">A 32-bit integer that represents the index in the <paramref name="value1"/> array at which comparison begins</param>
-        /// <param name="value2Index">A 32-bit integer that represents the index in the <paramref name="value2"/> array at which comparison begins</param>
-        unsafe public override bool Equality(Block2x2[] value1, Block2x2[] value2, int length = int.MaxValue, int value1Index = 0, int value2Index = 0)
-        {
-            Th.ThrowIfTwoValues(value1, value2, ref length, value1Index, value2Index);
-            bool returnValue;
-            fixed (Block2x2* value1Ptr = value1, value2Ptr = value2)
-                returnValue = DoubleArrayHelper.Equal((double*)value1Ptr, (double*)value2Ptr, length * 4, value1Index * 4, value2Index * 4);
-            return returnValue;
-        }
         #endregion Events, overrides
         #endregion Methods
     }

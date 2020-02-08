@@ -113,6 +113,11 @@ namespace AIlins.Thresher
             if (value == null)
                 throw new ArgumentNullException(paramName);
         }
+        internal static void ThrowIfNullSolver(object value)
+        {
+            if (value == null)
+                throw new Exception($"Solver for type {nameof(T)} is not defined!");
+        }
         unsafe internal static void ThrowCSRMatrixMatrix(int m, int n, T[] value1, int[] value1Columns, int[] value1RowsMapping, T[] value2, int[] value2Columns, int[] value2RowsMapping, ref T[] result, ref int[] resultColumns, ref int[] resultRowsMapping)
         {
             if (m < 0 || n < 0)

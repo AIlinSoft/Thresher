@@ -24,7 +24,8 @@ using System.Text;
 namespace AIlins.Thresher
 {
     /// <summary>
-    /// Matrix with rang 2
+    /// Real matrix 2x2
+    /// https://en.wikipedia.org/wiki/2_×_2_real_matrices
     /// </summary>
     public struct Block2x2: IFormattable
     {
