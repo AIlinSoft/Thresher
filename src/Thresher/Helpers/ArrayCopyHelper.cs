@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace AIlins.Thresher
@@ -254,13 +255,13 @@ namespace AIlins.Thresher
         /// <param name="source">The uint array that contains the data to copy</param>
         /// <param name="dest">The uint array that receives the data</param>
         /// <param name="length">A 32-bit integer that represents the number of uint elements to copy</param>
-        unsafe public static void Copy(int[] source, int[] dest, int length)
+        unsafe public static void Copy1(int[] source, int[] dest, int length)
         {
             fixed (int* sourcePointer = source, destPointer = dest)
             {
-                ulong* sourcePtr = (ulong*)(void*)sourcePointer;
-                ulong* sourcePtrEnd = (ulong*)(void*)sourcePointer + (length >> 1) - 31;
-                ulong* destPtr = (ulong*)(void*)destPointer;
+                long* sourcePtr = (long*)(void*)sourcePointer;
+                long* sourcePtrEnd = (long*)(void*)sourcePointer + (length >> 1) - 31;
+                long* destPtr = (long*)(void*)destPointer;
 
                 while (sourcePtr < sourcePtrEnd)
                 {
@@ -360,6 +361,64 @@ namespace AIlins.Thresher
                     *((uint*)(void*)destPtr) = *((uint*)(void*)sourcePtr);
             }
         }
+        unsafe public static void Copy(int[] source, int[] dest, int length)
+        {
+            fixed (int* sourcePointer = source, destPointer = dest)
+            {
+                byte* sourcePtr = (byte*)(void*)sourcePointer;
+                byte* destPtr = (byte*)(void*)destPointer;
+                length = length * 4;
+                int count = 0;
+
+                while (length - count > 127)
+                {
+                    *(Block64*)(destPtr + count) = *(Block64*)(sourcePtr + count);
+                    count += 64;
+                    *(Block64*)(destPtr + count) = *(Block64*)(sourcePtr + count);
+                    count += 64;
+                }
+                if (length - count > 63)
+                {
+                    *(Block64*)(destPtr + count) = *(Block64*)(sourcePtr + count);
+                    count += 64;
+                }
+                if (length - count > 31)
+                {
+                    *(Block32*)(destPtr + count) = *(Block32*)(sourcePtr + count);
+                    count += 32;
+                }
+                if (length - count > 15)
+                {
+                    *(Block16*)(destPtr + count) = *(Block16*)(sourcePtr + count);
+                    count += 16;
+                }
+                if (length - count > 7)
+                {
+                    *(ulong*)(destPtr + count) = *(ulong*)(sourcePtr + count);
+                    count += 8;
+                }
+                if (length - count > 3)
+                {
+                    *(uint*)(destPtr + count) = *(uint*)(sourcePtr + count);
+                    count += 4;
+                }
+                if (length - count > 1)
+                {
+                    *(ushort*)(destPtr + count) = *(ushort*)(sourcePtr + count);
+                    count += 2;
+                }
+                if (length - count > 0)
+                    *destPtr = *sourcePtr;
+
+            }
+        }
+        [StructLayout(LayoutKind.Sequential, Size = 16)]
+        private struct Block16 { }
+        [StructLayout(LayoutKind.Sequential, Size = 32)]
+        private struct Block32 { }
+
+        [StructLayout(LayoutKind.Sequential, Size = 64)]
+        private struct Block64 { }
         /// <summary>
         /// Fast copies a range of elements from an double array starting at the first element and pastes them into another double array starting at the first element.
         /// </summary>

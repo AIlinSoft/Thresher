@@ -20,6 +20,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Numerics;
+#if NETCOREAPP3_0
+using System.Runtime.Intrinsics.X86;
+#endif
 #endregion Using namespaces
 #region Working namespace
 namespace AIlins.Thresher
@@ -438,6 +441,24 @@ namespace AIlins.Thresher
             double* ptrValue1 = value1 + value1Index;
             double* ptrValue2 = value2 + value2Index;
             double* ptrResult = result + resultIndex;
+#if NETCOREAPP3_0
+            // If we can use avx -- cool
+            if(Avx2.IsSupported)
+            {
+                var i = 0;
+                for (; i + 3 < length; i += 4)
+                    Avx2.Store(ptrResult + i, Avx2.Add(Avx.LoadVector256(ptrValue1 + i), Avx2.LoadVector256(ptrValue2 + i)));
+                if (length - i > 1)
+                {
+                    *(ptrResult + i) = *(ptrValue1 + i) + *(ptrValue2 + i);
+                    *(ptrResult + i + 1) = *(ptrValue1 + i + 1) + *(ptrValue2 + i + 1);
+                    i += 2;
+                }
+                if (length > i)
+                    *(ptrResult + i) = *(ptrValue1 + i) + *(ptrValue2 + i);
+                return;
+            }
+#endif
             double* ptrEnd = ptrResult + length - 31;
             // Main loop, pointers for row values
             while (ptrResult < ptrEnd)
@@ -1375,12 +1396,12 @@ namespace AIlins.Thresher
                 result &= *ptrValue1 == *ptrValue2;
             return result;
         }
-        #endregion Internal methods
-        #region Private methods
-        #endregion Private methods
-        #region Events, overrides
-        #endregion Events, overrides
-        #endregion Methods
+#endregion Internal methods
+#region Private methods
+#endregion Private methods
+#region Events, overrides
+#endregion Events, overrides
+#endregion Methods
     }
 }
 #endregion Working namespace
